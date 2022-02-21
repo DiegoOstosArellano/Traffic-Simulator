@@ -45,7 +45,7 @@ public class Vehicle extends SimulatedObject {
 		else current_speed = s;
 	}
 	
-	void setContaminationClass(int c) {
+	void setContClass(int c) {
 		if (c < 0 || c > 10) throw new IllegalArgumentException("contamination must be a number between 0 and 10");
 		contamination_class = c;
 	}

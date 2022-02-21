@@ -15,13 +15,13 @@ public class Junction extends SimulatedObject{
 	private Map<Junction, Road> carreteras_salientes;
 	private List<List<Vehicle>> lista_colas;
 	private  Map<Road,List<Vehicle>> carretera_cola;
-	private int indice_semaforo_verde; //-1 si todas las carreteras entrantes tienen el sem·foro en rojo
+	private int indice_semaforo_verde; //-1 si todas las carreteras entrantes tienen el sem√°foro en rojo
 	private int ultimo_paso_semaforo;
-	private LightSwitchStrategy estrategia_semaforo;
+	private LightSwitchingStrategy estrategia_semaforo;
 	private DequeuingStrategy estrategia_eliminar;
 	private int x, y;
 
-	Junction(String id, LightSwitchStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor){
+	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor){
 		super(id);
 		if (lsStrategy == null) throw new IllegalArgumentException("there must be a light switch strategy");
 		if (dqStrategy == null) throw new IllegalArgumentException("there must be a dequeing strategy");
@@ -40,7 +40,7 @@ public class Junction extends SimulatedObject{
 	}
 	
 	public void addIncommingRoad(Road r) {
-		if (r.getDest() != this) throw new IllegalArgumentException("the road must be an entrance road");
+		if (r.getDest().equals(this)) throw new IllegalArgumentException("the road must be an entrance road");
 		
 		carreteras_entrantes.add(r);
 		List<Vehicle> l = new LinkedList<Vehicle>();

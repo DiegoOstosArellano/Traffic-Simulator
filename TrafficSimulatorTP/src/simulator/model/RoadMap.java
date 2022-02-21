@@ -76,13 +76,13 @@ public class RoadMap {
 		return Collections.unmodifiableList(lista_vehiculos);
 	}
 	
-	void reset() { //PFREGUNTAR�����
-		lista_cruces = new ArrayList<Junction>();
-		lista_carreteras = new ArrayList<Road>();
-		lista_vehiculos = new ArrayList<Vehicle>();
-		mapa_cruces = new HashMap<String, Junction>();
-		mapa_carreteras = new HashMap<String, Road>();
-		mapa_vehiculos = new HashMap<String, Vehicle>();
+	void reset() { 
+		lista_cruces.clear();
+		lista_carreteras.clear();
+		lista_vehiculos.clear();
+		mapa_cruces.clear();
+		mapa_carreteras.clear();
+		mapa_vehiculos.clear();
 	}
 	
 	public JSONObject report() {
