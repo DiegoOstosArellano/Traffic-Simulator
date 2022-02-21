@@ -21,9 +21,9 @@ public abstract class Road extends SimulatedObject {
 	
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) { 
 		super(id); 
-		if (maxSpeed < 0) throw new IllegalArgumentException("maxSpeed must be a positive number"); 
+		if (maxSpeed <= 0) throw new IllegalArgumentException("maxSpeed must be a positive number"); 
 		if (contLimit < 0) throw new IllegalArgumentException("contLimit must be a positive number");
-		if (length < 0) throw new IllegalArgumentException("length must be a positive number");
+		if (length <= 0) throw new IllegalArgumentException("length must be a positive number");
 		if (srcJunc.equals(null)) throw new IllegalArgumentException("there must be a source Junction");
 		if (destJunc.equals(null)) throw new IllegalArgumentException("there must be a destination Junction");
 		if (weather.equals(null)) throw new IllegalArgumentException("there must be a weather");
@@ -82,18 +82,21 @@ public abstract class Road extends SimulatedObject {
 	public JSONObject report() {
 		JSONObject jo1 = new JSONObject();
 
-		jo1.put("id", _id);
+		
 		jo1.put("speedlimit", current_speed_limit);
-		jo1.put("weather", weather_conditions);
 		jo1.put("co2", total_contamination);
+		jo1.put("weather", weather_conditions.toString());
 		
 		JSONArray ja = new JSONArray();
 		for (Vehicle v : vehiculos) {
 			ja.put(v.getId());
 		}
+		
 		jo1.put("vehicles", ja);
+		jo1.put("id", _id);
 		
 		return jo1;
+		
 	 }
 	
 	public Junction getDest() {

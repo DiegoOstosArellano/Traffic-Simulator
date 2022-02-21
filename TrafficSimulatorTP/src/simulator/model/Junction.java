@@ -39,13 +39,13 @@ public class Junction extends SimulatedObject{
 		y = yCoor;
 	}
 	
-	public void addIncommingRoad(Road r) {
-		if (r.getDest().equals(this)) throw new IllegalArgumentException("the road must be an entrance road");
-		
+	public void addIncommingRoad(Road r) { //r carretera que estoy creando 
+		if (!r.getDest().equals(this)) throw new IllegalArgumentException("the road must be an entrance road"); 
 		carreteras_entrantes.add(r);
 		List<Vehicle> l = new LinkedList<Vehicle>();
 		lista_colas.add(l);
 		carretera_cola.put(r, l);
+		
 	}
 	
 	public void addOutGoingRoad(Road r) {

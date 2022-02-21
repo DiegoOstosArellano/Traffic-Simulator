@@ -23,7 +23,7 @@ public class Vehicle extends SimulatedObject {
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) { 
 		super(id); 
-		if (maxSpeed < 0) throw new IllegalArgumentException("maxSpeed must be a positive number"); 
+		if (maxSpeed <= 0) throw new IllegalArgumentException("maxSpeed must be a positive number"); 
 		if (contClass < 0 || contClass > 10) throw new IllegalArgumentException("contClass must be a number between 0 and 10");
 		if (itinerary.size() < 2) throw new IllegalArgumentException("there must be at least two junctions");
 			
@@ -76,12 +76,17 @@ public class Vehicle extends SimulatedObject {
 	 	if(status.equals(VehicleStatus.PENDING)){
 	 		Road r1 = itinerary.get(0).roadTo(itinerary.get(1));
 	 		r1.enter(this);
+	 		road = r1;
 	 	}
 	 	else {
 	 		Road r2 = itinerary.get(last_junction).roadTo(itinerary.get(last_junction + 1)); 
 	 		road.exit(this);
 	 		location = 0; 
-	 		if(last_junction < itinerary.size())  r2.enter(this);
+	 		if(last_junction < itinerary.size())  {
+	 			r2.enter(this);
+	 			road = r2; 
+	 		}
+	 		
 	 	}
 		last_junction++; 
 		status = VehicleStatus.TRAVELING;
