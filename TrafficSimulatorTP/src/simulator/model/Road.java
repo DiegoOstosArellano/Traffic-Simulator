@@ -38,6 +38,9 @@ public abstract class Road extends SimulatedObject {
 		total_contamination = 0;
 		vehiculos = new ArrayList<Vehicle>();
 		comp = new VehicleComparator();
+		
+		this.destination_junction.addIncommingRoad(this);
+		this.source_junction.addOutGoingRoad(this);
 	} 
 	
 	void enter(Vehicle v) {
