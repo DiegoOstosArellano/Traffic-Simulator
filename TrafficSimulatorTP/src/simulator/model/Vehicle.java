@@ -40,9 +40,12 @@ public class Vehicle extends SimulatedObject {
 	} 
 	
 	void setSpeed(int s) {
-		if (s < 0) throw new IllegalArgumentException("Speed must be a postive value");
-		if (maximum_speed < s) current_speed = maximum_speed;
-		else current_speed = s;
+		if(status.equals(VehicleStatus.TRAVELING)) {
+			if (s < 0) throw new IllegalArgumentException("Speed must be a postive value");
+			if (maximum_speed < s) current_speed = maximum_speed;
+			else current_speed = s;
+		}
+		
 	}
 	
 	void setContClass(int c) {
@@ -67,6 +70,7 @@ public class Vehicle extends SimulatedObject {
 				status = VehicleStatus.WAITING;
 				current_speed = 0;
 			}
+			this.total_travelled_distance += location - location_prev; 
 		}
 	}
 	
@@ -95,16 +99,22 @@ public class Vehicle extends SimulatedObject {
 	 public JSONObject report() {
 		 JSONObject jo1 = new JSONObject();
 
-			jo1.put("id", _id);
-			jo1.put("speed", current_speed);
 			jo1.put("distance", total_travelled_distance);
-			jo1.put("co2", total_contamination);
-			jo1.put("class", contamination_class);
-			jo1.put("status", status);
+			
 			if (status.equals(VehicleStatus.WAITING) || status.equals(VehicleStatus.TRAVELING)) {
-				jo1.put("road", road);
+				jo1.put("road", road.getId());
+			}
+
+			jo1.put("co2", total_contamination);
+			if (status.equals(VehicleStatus.WAITING) || status.equals(VehicleStatus.TRAVELING)) {
 				jo1.put("location", location);
 			}
+			
+			jo1.put("id", _id);
+			jo1.put("class", contamination_class);
+			jo1.put("speed", current_speed);
+			jo1.put("status", status.toString());
+			
 			
 			return jo1;
 	 }

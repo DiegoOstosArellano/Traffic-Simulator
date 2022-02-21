@@ -89,20 +89,19 @@ public class RoadMap {
 		
 		JSONObject jo1 = new JSONObject();
 		
+		JSONArray ja2 = new JSONArray();
+		for (Road r : lista_carreteras) {
+			ja2.put(r.report());
+		}
+		
+		jo1.put("roads", ja2);
+		
 		JSONArray ja = new JSONArray();
 		for (Junction j : lista_cruces) {
 			ja.put(j.report());
 		}
 		
 		jo1.put("junctions", ja);
-		
-		
-		JSONArray ja2 = new JSONArray();
-		for (Road r : lista_carreteras) {
-			ja2.put(r.report());
-		}
-		
-		jo1.put("road", ja2);
 		
 		JSONArray ja3 = new JSONArray();
 		for (Vehicle v : lista_vehiculos) {
