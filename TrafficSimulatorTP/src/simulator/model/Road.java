@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -104,7 +105,7 @@ public abstract class Road extends SimulatedObject {
 	}
 
 	public List<Vehicle> getVehicles() {
-		return vehiculos;
+		return Collections.unmodifiableList(vehiculos);
 	}
 
 	public Junction getSrc() {
