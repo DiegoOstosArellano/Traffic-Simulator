@@ -6,6 +6,7 @@ public class RoundRobinStrategy implements LightSwitchingStrategy{
 	
 	private int ticks;
 	
+	//tenemos que comprobar el timeSlot???
 	public RoundRobinStrategy (int timeSlot){
 		ticks = timeSlot;
 	}
