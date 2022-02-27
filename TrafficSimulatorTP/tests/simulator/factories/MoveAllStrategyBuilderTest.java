@@ -16,6 +16,7 @@ class MoveAllStrategyBuilderTest {
 		
 		String inputJSon = " { \"type\" : \"move_all_dqs\",  \"data\" : {} }";
 		DequeuingStrategy o = eb.createInstance(new JSONObject(inputJSon));
+		
 		assertTrue( o instanceof MoveAllStrategy );
 		
 	}
