@@ -25,7 +25,7 @@ public class SetWeatherEventBuilder extends Builder<Event> {
 		Pair<String,Weather> aux;
 		for (int i = 0; i < ja.length(); ++i) {
 			l.add(ja.getJSONObject(i));
-			aux = new Pair<String,Weather>(l.get(i).getString("road"), Weather.valueOf(l.get(i).getString("weather")));
+			aux = new Pair<String,Weather>(l.get(i).getString("road"), Weather.valueOf(l.get(i).getString("weather").toUpperCase()));
 			ws.add(aux);
 		}
 		

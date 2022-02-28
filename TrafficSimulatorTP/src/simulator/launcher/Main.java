@@ -1,6 +1,13 @@
 package simulator.launcher;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -9,12 +16,29 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import simulator.control.Controller;
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.MostCrowdedStrategyBuilder;
+import simulator.factories.MoveAllStrategyBuilder;
+import simulator.factories.MoveFirstStrategyBuilder;
+import simulator.factories.NewCityRoadEventBuilder;
+import simulator.factories.NewInterCityRoadEventBuilder;
+import simulator.factories.NewJunctionEventBuilder;
+import simulator.factories.NewVehicleEventBuilder;
+import simulator.factories.RoundRobinStrategyBuilder;
+import simulator.factories.SetContClassEventBuilder;
+import simulator.factories.SetWeatherEventBuilder;
+import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
+import simulator.model.LightSwitchingStrategy;
+import simulator.model.TrafficSimulator;
 
 public class Main {
 
 	private final static Integer _timeLimitDefaultValue = 10;
+	private static int _timeLimit;
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
@@ -33,7 +57,8 @@ public class Main {
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
 			parseOutFileOption(line);
-
+			parseTicksOption(line);
+			
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
 			//
@@ -59,6 +84,7 @@ public class Main {
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
+		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").desc("Ticks to the simulator's main loop (default value is 10)").build());
 
 		return cmdLineOptions;
 	}
@@ -81,15 +107,51 @@ public class Main {
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
 	}
+	
+	private static void parseTicksOption(CommandLine line) throws ParseException {
+		if (line.hasOption("t")) {
+			String t = line.getOptionValue("t");
+			//try {
+				_timeLimit = Integer.parseInt(t);
+			/*}catch(NumberFormatException nfe) {
+				throw new ParseException("Cannot convert to an Integer");
+			}*/
+		}
+		else {
+			_timeLimit = _timeLimitDefaultValue;
+		}
+	}
 
 	private static void initFactories() {
+		ArrayList<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
+		lsbs.add( new RoundRobinStrategyBuilder() ); 
+		lsbs.add( new MostCrowdedStrategyBuilder() );
+		Factory<LightSwitchingStrategy> lssFactory = new BuilderBasedFactory<>(lsbs);
 
-		// TODO complete this method to initialize _eventsFactory
-
+		ArrayList<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
+		dqbs.add( new MoveFirstStrategyBuilder() ); 
+		dqbs.add( new MoveAllStrategyBuilder() ); 
+		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(dqbs); 
+		
+		ArrayList<Builder<Event>> ebs = new ArrayList<>(); 
+		ebs.add( new NewJunctionEventBuilder(lssFactory,dqsFactory) );
+		ebs.add( new NewCityRoadEventBuilder() ); 
+		ebs.add( new NewInterCityRoadEventBuilder() ); 
+		ebs.add( new SetContClassEventBuilder() );
+		ebs.add( new SetWeatherEventBuilder() );
+		ebs.add( new NewVehicleEventBuilder() );
+		
+		_eventsFactory = new BuilderBasedFactory<>(ebs); 
 	}
 
 	private static void startBatchMode() throws IOException {
-		// TODO complete this method to start the simulation
+		InputStream is = new FileInputStream(new File(_inFile));
+		OutputStream os = System.out;
+		if (_outFile != null) os = new FileOutputStream(new File(_outFile));
+		TrafficSimulator ts = new TrafficSimulator();
+		Controller c = new Controller(ts, _eventsFactory);
+		c.loadEvents(is);
+		c.run(_timeLimit, os);
 	}
 
 	private static void start(String[] args) throws IOException {

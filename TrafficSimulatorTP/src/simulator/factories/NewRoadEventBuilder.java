@@ -29,7 +29,7 @@ public abstract class NewRoadEventBuilder extends Builder<Event>{
 		co2limit = data.getInt("co2limit");
 		maxspeed = data.getInt("maxspeed");
 		String string_weather = data.getString("weather");
-		weather = Weather.valueOf(string_weather);
+		weather = Weather.valueOf(string_weather.toUpperCase());
 		
 		return createTheRoad();
 	}
