@@ -36,10 +36,13 @@ public class Controller {
 	
 	public void run (int n, OutputStream out) {
 		PrintStream p = new PrintStream(out);
+		p.print("{ \"states\": [");
 		for (int i = 0; i < n; ++i) {
 			traffic_simulator.advance();
 			p.print(traffic_simulator.report().toString());
+			p.println(",");
 		}
+		p.print("] }");
 	}
 	
 	public void reset (int n, OutputStream out) {

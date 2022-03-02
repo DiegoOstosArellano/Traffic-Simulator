@@ -36,7 +36,7 @@ public class Vehicle extends SimulatedObject {
 		location = 0;
 		total_contamination = 0;
 		total_travelled_distance = 0;
-		last_junction = -1;
+		last_junction = 1;
 	} 
 	
 	void setSpeed(int s) {
@@ -66,15 +66,10 @@ public class Vehicle extends SimulatedObject {
 
 			
 			if (location == road.getLength()) {
-				if(last_junction != itinerary.size()) {
-					itinerary.get(last_junction + 1).enter(this); 
-					status = VehicleStatus.WAITING;
-				}
-		
-				else 
-					status = VehicleStatus.ARRIVED; 
+				road.getDest().enter(this);
+				//itinerary.get(last_junction + 1).enter(this); 
+				status = VehicleStatus.WAITING;
 				current_speed = 0;
-				
 			}
 			this.total_travelled_distance += location - location_prev; 
 		}
@@ -89,16 +84,22 @@ public class Vehicle extends SimulatedObject {
 	 		road = r1;
 	 	}
 	 	else {
-	 		Road r2 = itinerary.get(last_junction).roadTo(itinerary.get(last_junction + 1)); 
-	 		road.exit(this);
-	 		location = 0; 
-	 		if(last_junction < itinerary.size())  {
+	 		if(last_junction < (itinerary.size() - 1)) {
+	 			location = 0; 
+	 			Road r2 = itinerary.get(last_junction).roadTo(itinerary.get(last_junction + 1)); 
+		 		road.exit(this);
 	 			r2.enter(this);
-	 			road = r2; 
+	 			status = VehicleStatus.TRAVELING;
+	 			last_junction++; 
+	 		}
+	 		else {
+	 			status = VehicleStatus.ARRIVED;
+	 			current_speed = 0;
+	 			road = null;
 	 		}
 	 		
 	 	}
-		last_junction++; 
+
 		status = VehicleStatus.TRAVELING;
 	}
 	
