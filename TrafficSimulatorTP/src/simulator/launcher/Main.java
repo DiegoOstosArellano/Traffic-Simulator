@@ -84,7 +84,7 @@ public class Main {
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
-		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").desc("Ticks to the simulator's main loop (default value is 10)").build());
+		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg().desc("Ticks to the simulator's main loop (default value is 10)").build());
 
 		return cmdLineOptions;
 	}
@@ -110,9 +110,11 @@ public class Main {
 	
 	private static void parseTicksOption(CommandLine line) throws ParseException {
 		if (line.hasOption("t")) {
-			String t = line.getOptionValue("t");
-			//try {
-				_timeLimit = Integer.parseInt(t);
+			String t = line.getOptionValue("t", _timeLimitDefaultValue.toString()); 
+			_timeLimit = Integer.parseInt(t);
+			
+			//try {				_timeLimit = Integer.parseInt(t);
+
 			/*}catch(NumberFormatException nfe) {
 				throw new ParseException("Cannot convert to an Integer");
 			}*/

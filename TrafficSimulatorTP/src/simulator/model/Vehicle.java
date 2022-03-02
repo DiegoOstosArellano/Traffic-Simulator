@@ -66,9 +66,15 @@ public class Vehicle extends SimulatedObject {
 
 			
 			if (location == road.getLength()) {
-				itinerary.get(last_junction + 1).enter(this); 
-				status = VehicleStatus.WAITING;
+				if(last_junction != itinerary.size()) {
+					itinerary.get(last_junction + 1).enter(this); 
+					status = VehicleStatus.WAITING;
+				}
+		
+				else 
+					status = VehicleStatus.ARRIVED; 
 				current_speed = 0;
+				
 			}
 			this.total_travelled_distance += location - location_prev; 
 		}
