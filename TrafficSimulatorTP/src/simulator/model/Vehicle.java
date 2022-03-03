@@ -65,7 +65,7 @@ public class Vehicle extends SimulatedObject {
 			road.addContamination(c);
 
 			
-			if (location == road.getLength()) {
+			if (location >= road.getLength()) {
 				road.getDest().enter(this);
 				//itinerary.get(last_junction + 1).enter(this); 
 				status = VehicleStatus.WAITING;
@@ -80,27 +80,28 @@ public class Vehicle extends SimulatedObject {
 		 	
 	 	if(status.equals(VehicleStatus.PENDING)){
 	 		Road r1 = itinerary.get(0).roadTo(itinerary.get(1));
-	 		r1.enter(this);
 	 		road = r1;
+	 		r1.enter(this);
+			status = VehicleStatus.TRAVELING;
 	 	}
 	 	else {
 	 		if(last_junction < (itinerary.size() - 1)) {
 	 			location = 0; 
 	 			Road r2 = itinerary.get(last_junction).roadTo(itinerary.get(last_junction + 1)); 
 		 		road.exit(this);
+	 			this.road = r2;
 	 			r2.enter(this);
 	 			status = VehicleStatus.TRAVELING;
 	 			last_junction++; 
 	 		}
 	 		else {
-	 			status = VehicleStatus.ARRIVED;
+	 			this.status = VehicleStatus.ARRIVED;
 	 			current_speed = 0;
+	 			road.exit(this);
 	 			road = null;
 	 		}
 	 		
 	 	}
-
-		status = VehicleStatus.TRAVELING;
 	}
 	
 	 public JSONObject report() {

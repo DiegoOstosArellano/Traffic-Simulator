@@ -29,7 +29,7 @@ public class Junction extends SimulatedObject{
 		
 		carreteras_entrantes = new ArrayList<Road>();
 		carreteras_salientes = new HashMap<Junction, Road>();
-		lista_colas = new ArrayList<>(); //ArrayList<List>>
+		lista_colas = new ArrayList<List<Vehicle>>(); //ArrayList<List>>
 		carretera_cola = new HashMap<Road, List<Vehicle>>();
 		indice_semaforo_verde = -1; 
 		ultimo_paso_semaforo = 0;
@@ -67,13 +67,14 @@ public class Junction extends SimulatedObject{
 
 	@Override
 	public void advance(int time) {
-		if (indice_semaforo_verde != - 1) {
+		if (indice_semaforo_verde != - 1 && !lista_colas.isEmpty()) {
 			List<Vehicle> queu = lista_colas.get(indice_semaforo_verde);
 			List<Vehicle> eliminados = estrategia_eliminar.dequeue(queu);
-			for (Vehicle v: eliminados) {
-				v.moveToNextRoad();
-				queu.remove(v);
-				//como es el mismo objeto solo se elimina una vez
+			
+			while (!eliminados.isEmpty()) {
+				eliminados.get(0).moveToNextRoad();
+				eliminados.remove(eliminados.get(0));
+				this.lista_colas.get(indice_semaforo_verde).remove(0);
 			}
 		}
 		

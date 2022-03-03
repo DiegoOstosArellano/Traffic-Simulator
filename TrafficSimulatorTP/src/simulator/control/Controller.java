@@ -38,6 +38,8 @@ public class Controller {
 		PrintStream p = new PrintStream(out);
 		p.print("{ \"states\": [");
 		for (int i = 0; i < n; ++i) {
+			if(i == 297)
+				System.out.println();
 			traffic_simulator.advance();
 			p.print(traffic_simulator.report().toString());
 			p.println(",");
