@@ -36,7 +36,8 @@ public class Controller {
 	
 	public void run (int n, OutputStream out) {
 		PrintStream p = new PrintStream(out);
-		p.print("{ \"states\": [");
+		p.println("{");
+		p.println("  \"states\": [");
 		for (int i = 0; i < n; ++i) {
 			if(i == 297)
 				System.out.println();
@@ -44,7 +45,8 @@ public class Controller {
 			p.print(traffic_simulator.report().toString());
 			p.println(",");
 		}
-		p.print("] }");
+		p.println("]");
+		p.println("}");
 	}
 	
 	public void reset (int n, OutputStream out) {
