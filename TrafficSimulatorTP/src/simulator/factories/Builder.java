@@ -12,6 +12,7 @@ public abstract class Builder<T> {
 			_type = type;
 	}
 
+	// recibe el JSONObject y lo convierte en el objeto T, por medio de su builder.
 	public T createInstance(JSONObject info) {
 
 		T b = null;

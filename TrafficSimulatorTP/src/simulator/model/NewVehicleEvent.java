@@ -17,6 +17,7 @@ public class NewVehicleEvent extends Event {
 			this.itinerary_strings = itinerary;
 	}
 
+	// Crea un vehiculo en funcion de sus argumentos y se añade al mapa de carreteras
 	@Override
 	void execute(RoadMap map) {
 		List<Junction> itinerary_junctions = new ArrayList<Junction>();

@@ -25,7 +25,7 @@ public class Controller {
 		events_factory = fe;
 	}
 	
-	//La profesora dijo que la excepción no hacía falta
+	// Carga los eventos (La profesora dijo que la excepción no hacía falta).
 	public void loadEvents(InputStream in) {
 		JSONObject jo = new JSONObject(new JSONTokener(in));
 		JSONArray ja = jo.getJSONArray("events"); 
@@ -34,6 +34,7 @@ public class Controller {
 		}
 	}
 	
+	// Ejecuta el simulador n ticks, llamando al metodo advance n veces y escribe los diferentes estados en out, utilizando el formato JSON.
 	public void run (int n, OutputStream out) {
 		PrintStream p = new PrintStream(out);
 		p.println("{");

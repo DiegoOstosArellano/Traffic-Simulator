@@ -53,6 +53,10 @@ public class Vehicle extends SimulatedObject {
 		contamination_class = c;
 	}
 	
+	
+	// Si el estado del vehiculo es traveling se actualiza la localizacion a su localizacion actual + current_speed, siempre que sea menor 
+	// que la carretera. Y se actualiza la contaminacion producida por el vehiculo en ese tramo.
+	// Si se llega al final de la carretera el vehiculo entra en la cola del cruce correspondiendo, modificando su estado a waiting.
 	@Override
 	void advance(int time) {
 		if (status.equals(VehicleStatus.TRAVELING)) {
@@ -75,6 +79,14 @@ public class Vehicle extends SimulatedObject {
 		}
 	}
 	
+	// Mueve el vehiculo a la siguiente carretera.
+	// Este proceso se realiza saliendo de la carretera actual y entrando en la proxima carretera del itinerario del vehiculo.
+	// Para encontrar la siguiente carretera debe preguntar al cruce en el que el vehiculo esta esperando o el primero del itinerario 
+	// en caso de que su estado sea pending. 
+	// Distinguimo tres casos:
+	// - Cuando el vehiculo el vehiculo no ha entrado en ningun cruce (pending), luego no puede venir de ninguna carretera (no hacemos exit, solo enter)
+	// - Cuando el vehiculo esta en medio de su itinerario (waiting), hacemos enter y exit.
+	// - Cuando el vehiculo esta en el ultimo cruce de su itinerario, luego solo hacemos exit, pues ya no entra en ninguna carretera.
 	void moveToNextRoad() {
 	    if (status.equals(VehicleStatus.ARRIVED) || status.equals(VehicleStatus.TRAVELING)) throw new IllegalArgumentException("the status must be Pending or Waiting");
 		 	

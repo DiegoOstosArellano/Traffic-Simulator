@@ -108,16 +108,11 @@ public class Main {
 		_outFile = line.getOptionValue("o");
 	}
 	
+	// Obtiene los ticks, en caso de que aparezcan en el commandLine se leen, sino se pone a un valor por defecto.
 	private static void parseTicksOption(CommandLine line) throws ParseException {
 		if (line.hasOption("t")) {
 			String t = line.getOptionValue("t", _timeLimitDefaultValue.toString()); 
 			_timeLimit = Integer.parseInt(t);
-			
-			//try {				_timeLimit = Integer.parseInt(t);
-
-			/*}catch(NumberFormatException nfe) {
-				throw new ParseException("Cannot convert to an Integer");
-			}*/
 		}
 		else {
 			_timeLimit = _timeLimitDefaultValue;

@@ -26,6 +26,8 @@ public class RoadMap {
 		mapa_vehiculos = new HashMap<String, Vehicle>();
 	}
 	
+	// Comprueba que este cruce no exista mediante el identificador. 
+	// Si todo va bien añade el cruce j al final de la lista de cruces y modifica el mapa de cruces.
 	void addJunction(Junction j) { 
 		if(mapa_cruces.containsKey(j.getId())) throw new IllegalArgumentException("this junction is already in the map"); 
 		
@@ -33,6 +35,8 @@ public class RoadMap {
 		lista_cruces.add(j);
 	}
 	
+	// Comprueba que esta carretera no exista mediante el identificador y que los cruces que conecta estan en el mapa de cruces. 
+	// Si todo va bien añade la carretra r al final de la lista de carreteras y modifica el mapa de carreteras.
 	void addRoad(Road r) {
 		if(mapa_carreteras.containsKey(r.getId())) throw new IllegalArgumentException("this road is already in the map"); 
 		if(!mapa_cruces.containsKey(r.getSrc().getId()) || !mapa_cruces.containsKey(r.getDest().getId())) throw new IllegalArgumentException("this road is incorrect");
@@ -41,6 +45,8 @@ public class RoadMap {
 		lista_carreteras.add(r);
 	}
 	
+	// Comprueba que este vehiculo no exista mediante el identificador y que su itinerario es valido.
+	// Si todo va bien añade v al final de la lista de vehiculos y modifica el mapa de vehiculos.
 	void addVehicle(Vehicle v) {
 		if(mapa_vehiculos.containsKey(v.getId())) throw new IllegalArgumentException("this road is already in the map"); 
 		for (int i = 0; i < v.getItinerary().size() - 1; ++i) {
@@ -76,6 +82,7 @@ public class RoadMap {
 		return Collections.unmodifiableList(lista_vehiculos);
 	}
 	
+	// Limpia todas las listas y mapas.
 	void reset() { 
 		lista_cruces.clear();
 		lista_carreteras.clear();

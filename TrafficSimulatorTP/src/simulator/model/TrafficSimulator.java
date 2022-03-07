@@ -21,6 +21,9 @@ public class TrafficSimulator {
 		lista_eventos.add(e);
 	}
 	
+	// Avanza el estado de la simulacion de la siguiente forma.
+	// Incrementa el tiempo de la simulacion en 1, ejecuta todos los eventos cuyo tiempo sea igual al actual y los elimina. Posteriormente llama
+	// al metodo advance de todos los cruces y finalmente al de todas las carreteras.
 	public void advance() {
 		time++;
 		
@@ -37,6 +40,7 @@ public class TrafficSimulator {
 		}
 	}
 	
+	// Limpia el mapa de carretras y la lista de eventos y pone el tiempo a 0.
 	public void reset() {
 		mapa_carreteras.reset();
 		lista_eventos.clear();

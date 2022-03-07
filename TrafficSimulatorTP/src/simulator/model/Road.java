@@ -44,6 +44,7 @@ public abstract class Road extends SimulatedObject {
 		this.source_junction.addOutGoingRoad(this);
 	} 
 	
+	// Se añade el vehiculo a la lista de vehiculos de la carretera (al final) si la localizacion es 0 y la velocidad tambien.
 	void enter(Vehicle v) {
 		if (v.getLocation() != 0) throw new IllegalArgumentException("location must be 0"); 
 		if (v.getSpeed() != 0) throw new IllegalArgumentException("current speed must be 0");
@@ -69,6 +70,10 @@ public abstract class Road extends SimulatedObject {
 	abstract void updateSpeedLimit();
 	abstract int calculateVehicleSpeed(Vehicle v);
 	
+	// Avanza el estado de la carretera de la siguiente manera.
+	// Primero se reduce la contaminacion total, despues se actualiza el limite de velocidad y finalmente se recorre la lista de vehiculos,
+	// para cada uno de ellos se establece su velocidad al valor devuelto por la funcion calculateVehicleSpeed y se llama al metodo advance
+	// de cada uno de estos vehiculos. Para terminar que se ordena la lista de vehiculos por su localizacion.
 	public void advance(int time) {
 		reduceTotalContamination();
 		updateSpeedLimit();
