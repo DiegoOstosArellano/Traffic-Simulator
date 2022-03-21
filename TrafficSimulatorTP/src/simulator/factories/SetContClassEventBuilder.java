@@ -30,4 +30,9 @@ public class SetContClassEventBuilder extends Builder<Event> {
 		
 		return new NewSetContClassEvent(time, ws);
 	}
+	
+	@Override
+	public String toString() {
+		return "New setContClass '"+ _type +"'";
+	}
 }

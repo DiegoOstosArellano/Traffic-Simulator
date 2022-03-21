@@ -31,4 +31,9 @@ public class SetWeatherEventBuilder extends Builder<Event> {
 		
 		return new SetWeatherEvent(time, ws);
 	}
+	
+	@Override
+	public String toString() {
+		return "New SetWeather '"+ _type +"'";
+	}
 }

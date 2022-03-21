@@ -12,4 +12,9 @@ public class NewCityRoadEventBuilder extends NewRoadEventBuilder{
 	protected Event createTheRoad() {
 		return new NewCityRoadEvent(time, id, src, dest, length, co2limit, maxspeed, weather);
 	}
+	
+	@Override
+	public String toString() {
+		return "New City Road '"+ _type +"'";
+	}
 }

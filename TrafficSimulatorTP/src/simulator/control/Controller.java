@@ -10,10 +10,10 @@ import org.json.JSONTokener;
 
 import simulator.factories.Factory;
 import simulator.model.Event;
+import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
 
 public class Controller {
-	//privates entonces ;)
 	private TrafficSimulator traffic_simulator;
 	private Factory<Event> events_factory;
 	
@@ -52,5 +52,17 @@ public class Controller {
 	
 	public void reset (int n, OutputStream out) {
 		traffic_simulator.reset();
+	}
+	
+	public void addObserver(TrafficSimObserver o) {
+		traffic_simulator.addObserver(o);
+	}
+	
+	public void removeObserver(TrafficSimObserver o) {
+		traffic_simulator.removeObserver(o);
+	}
+	
+	public void addEvent(Event e) {
+		traffic_simulator.addEvent(e);
 	}
 }

@@ -28,4 +28,9 @@ public class NewVehicleEventBuilder extends Builder<Event> {
 		
 		return new NewVehicleEvent(time, id, maxspeed, clase, l);
 	}
+	
+	@Override
+	public String toString() {
+		return "New Vehicle '"+ _type +"'";
+	}
 }
