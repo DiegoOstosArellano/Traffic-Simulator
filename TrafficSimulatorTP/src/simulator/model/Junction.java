@@ -42,7 +42,7 @@ public class Junction extends SimulatedObject{
 	// primero comprobamos que el cruce destino de la carretera r es igual al cruce actual, en caso contrario lanzamos una excepcion.
 	// En caso de no lanzarla añadimos la carretera r al final de la lista de carreteras entrantes. Se crea una cola para r, la cual es añadidida
 	// al final de la lista de colas, a su vez, añadimos l con la llave r al mapa carretera_cola.
-	public void addIncommingRoad(Road r) { //r carretera que estoy creando 
+	void addIncommingRoad(Road r) { //r carretera que estoy creando 
 		if (!r.getDest().equals(this)) throw new IllegalArgumentException("the road must be an entrance road"); 
 		carreteras_entrantes.add(r);
 		List<Vehicle> l = new LinkedList<Vehicle>();
@@ -52,7 +52,7 @@ public class Junction extends SimulatedObject{
 	}
 	// primero comprobamos que el cruce de salida de la carretera r es igual al cruce actual, en caso contrario lanzamos una excepcion.
 	// Tambien comprobamos que ninguna otra carretera va a este cruce. Si todo va bien se añade el par j,r al mapa de carreteras salientes.
-	public void addOutGoingRoad(Road r) {
+	void addOutGoingRoad(Road r) {
 		if (r.getSrc() != this) throw new IllegalArgumentException("the road must be a source road");
 		if (carreteras_salientes.containsKey(r.getDest())) throw new IllegalArgumentException("there is already one road this destination");
 		
@@ -75,7 +75,7 @@ public class Junction extends SimulatedObject{
 	// si ningun semaforo esta en verde y la lista de colas no es vacia, movemos hacia la siguiente carretera el primer coche o todos los coches,
 	// dependiendo de la estrategia dequeuing. Finalmente elegimos el proximo semaforo verde, consecuentemente cambiamos el indice del semaforo.
 	@Override
-	public void advance(int time) {
+	void advance(int time) {
 		if (indice_semaforo_verde != - 1 && !lista_colas.isEmpty()) {
 			List<Vehicle> queu = lista_colas.get(indice_semaforo_verde);
 			List<Vehicle> eliminados = estrategia_eliminar.dequeue(queu);

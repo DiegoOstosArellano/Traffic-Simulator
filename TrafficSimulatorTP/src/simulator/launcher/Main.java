@@ -143,7 +143,7 @@ public class Main {
 
 	private static void startBatchMode() throws IOException {
 		InputStream is = new FileInputStream(new File(_inFile));
-		OutputStream os = System.out;
+		OutputStream os = System.out; //mas bonito operador ternario
 		if (_outFile != null) os = new FileOutputStream(new File(_outFile));
 		TrafficSimulator ts = new TrafficSimulator();
 		Controller c = new Controller(ts, _eventsFactory);

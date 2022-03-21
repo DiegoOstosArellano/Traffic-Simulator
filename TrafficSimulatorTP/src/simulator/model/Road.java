@@ -74,7 +74,7 @@ public abstract class Road extends SimulatedObject {
 	// Primero se reduce la contaminacion total, despues se actualiza el limite de velocidad y finalmente se recorre la lista de vehiculos,
 	// para cada uno de ellos se establece su velocidad al valor devuelto por la funcion calculateVehicleSpeed y se llama al metodo advance
 	// de cada uno de estos vehiculos. Para terminar que se ordena la lista de vehiculos por su localizacion.
-	public void advance(int time) {
+	void advance(int time) {
 		reduceTotalContamination();
 		updateSpeedLimit();
 		
