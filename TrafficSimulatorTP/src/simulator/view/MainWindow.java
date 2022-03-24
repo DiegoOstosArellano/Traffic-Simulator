@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,6 +17,7 @@ import simulator.control.Controller;
 public class MainWindow extends JFrame {
 	
 	private Controller _ctrl;
+
 	
 	public MainWindow(Controller ctrl) {
 		super("Traffic Simulator");

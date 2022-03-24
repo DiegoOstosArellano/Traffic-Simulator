@@ -1,5 +1,5 @@
 package simulator.control;
-//test
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -50,7 +50,7 @@ public class Controller {
 		p.println("}");
 	}
 	
-	public void reset (int n, OutputStream out) {
+	public void reset () {
 		traffic_simulator.reset();
 	}
 	
