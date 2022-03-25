@@ -60,7 +60,7 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 			g.setColor(Color.red);
 			g.drawString("No map yet!", getWidth() / 2 - 50, getHeight() / 2);
 		} else {
-			updatePrefferedSize();
+			updatePrefferedSize(); //copiamos esto igual menos esta linea pq nunca se nos va a salir
 			drawMap(g);
 		}
 	}

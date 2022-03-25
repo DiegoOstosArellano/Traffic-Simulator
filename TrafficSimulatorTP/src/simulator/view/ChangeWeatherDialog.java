@@ -24,26 +24,27 @@ import javax.swing.event.ChangeListener;
 
 import simulator.misc.Pair;
 import simulator.model.Event;
-import simulator.model.NewSetContClassEvent;
+import simulator.model.Road;
 import simulator.model.RoadMap;
+import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
-import simulator.model.Vehicle;
+import simulator.model.Weather;
 
-public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
+public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 	
 	private static final long serialVersionUID = 1L;
 
 	//private int _status; //para controlar la salida de nuestro cuadro de diálogo
-	private JComboBox<Vehicle> _vehicles;
-	private DefaultComboBoxModel<Vehicle> _vehiclesModel;
-	private JComboBox<Integer> CO2Combo;
-	private Integer CO2;
+	private JComboBox<Road> _roads;
+	private DefaultComboBoxModel<Road> _RoadModel;
+	private JComboBox<Weather> weatherCombo;
+	private Weather weather;
 	private int Time0 = 1;
 	private int ticks; 
 	private RoadMap mapa;
-	private Vehicle vehicle;
+	private Road road;
 	
-	public ChangeCO2ClassDialog(Frame parent) {
+	public ChangeWeatherDialog(Frame parent) {
 		super(parent, true); //el segundo argumento indica que la ventana es modal,e.d.,
 							//que hasta que no acepte o cancele no me deja interactuar
 							//con la anterior.
@@ -54,12 +55,12 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 		//_status = 0; //Por si cierro la ventana sin hacer clic en un botón
 
-		setTitle("Change CO2 Class");
+		setTitle("Change Road Weather");
 		JPanel mainPanel = new JPanel();
 		//mainPanel.setLayout(new BorderLayout());
 		setContentPane(mainPanel);
 
-		JLabel helpMsg = new JLabel("Schedule an event to change the CO2 class of a vehicle after a given number of simulation ticks from now.");
+		JLabel helpMsg = new JLabel("Schedule an event to change the weather of a road after a given number of simulation ticks from now.");
 		helpMsg.setAlignmentX(LEFT_ALIGNMENT);
 		mainPanel.add(helpMsg, BorderLayout.NORTH);
 		mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));//para que no salga 
@@ -70,36 +71,35 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		setContentPane(viewsPanel);
 		mainPanel.add(viewsPanel, BorderLayout.CENTER);
 		
-		JLabel VehicleMsg = new JLabel("Vehicle: ");
-		VehicleMsg.setAlignmentX(LEFT_ALIGNMENT);
-		viewsPanel.add(VehicleMsg);
-		_vehiclesModel = new DefaultComboBoxModel<>();
-		_vehicles = new JComboBox<>(_vehiclesModel);
-		_vehicles.addActionListener(new ActionListener() {
+		JLabel RoadMsg = new JLabel("Road: ");
+		RoadMsg.setAlignmentX(LEFT_ALIGNMENT);
+		viewsPanel.add(RoadMsg);
+		_RoadModel = new DefaultComboBoxModel<>();
+		_roads = new JComboBox<>(_RoadModel);
+		_roads.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<Vehicle> vehicles = new ArrayList<Vehicle>();
-				for (Vehicle v: mapa.getVehicles()) {
-					vehicles.add(v);
+				List<Road> roads = new ArrayList<Road>();
+				for (Road r: mapa.getRoads()) {
+					roads.add(r);
 				}
-				vehicle = openV(vehicles);
+				road = openR(roads);
 			}
 		});
-		viewsPanel.add(_vehicles);
+		viewsPanel.add(_roads);
 		
-		JLabel CO2Msg = new JLabel("CO2 Class: ");
-		CO2Msg.setAlignmentX(LEFT_ALIGNMENT);
-		viewsPanel.add(CO2Msg);
-		Integer[] valores = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-		CO2Combo = new JComboBox<Integer>(valores);
-		CO2Combo.addActionListener(new ActionListener() {
+		JLabel weatherMsg = new JLabel("Weather: ");
+		weatherMsg.setAlignmentX(LEFT_ALIGNMENT);
+		viewsPanel.add(weatherMsg);
+		Weather[] valores = Weather.values(); //TODO optimizar
+		weatherCombo = new JComboBox<Weather>(valores);
+		weatherCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//lblTexto.setText((Integer) CO2Combo.getSelectedItem());
-				CO2 = (Integer) CO2Combo.getSelectedItem();
+				weather = (Weather) weatherCombo.getSelectedItem();
 			}
 		});
-		viewsPanel.add(CO2Combo);
+		viewsPanel.add(weatherCombo);
 		
 		JLabel ticksMsg = new JLabel("Ticks: ");
 		ticksMsg.setAlignmentX(LEFT_ALIGNMENT);
@@ -121,7 +121,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChangeCO2ClassDialog.this.dispose();
+				ChangeWeatherDialog.this.dispose();
 			}
 		});
 		cancelokPanel.add(btnCancel);
@@ -133,10 +133,10 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//_status = 1;
-				List<Pair<String,Integer>> ws = new ArrayList<Pair<String,Integer>>();
-				Pair<String,Integer> auxPair = new Pair<String,Integer>(vehicle.getId(), CO2);
+				List<Pair<String,Weather>> ws = new ArrayList<Pair<String,Weather>>();
+				Pair<String,Weather> auxPair = new Pair<String,Weather>(road.getId(), weather);
 				ws.add(auxPair);
-				new NewSetContClassEvent(ticks, ws); //TODO
+				new SetWeatherEvent(ticks, ws); //TODO
 				mainPanel.setVisible(false);
 			}
 		});
@@ -145,22 +145,22 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		//no se si aqu� hay que indicar que hemos metido un nuevo observador o keloke
 	}
 	
-	public Vehicle openV(List<Vehicle> vehicles) { //si se ve raro cambiarlo xd
-		_vehiclesModel.removeAllElements();
-		for (Vehicle v : vehicles)
-			_vehiclesModel.addElement(v);
+	public Road openR(List<Road> roads) { //si se ve raro cambiarlo xd
+		_RoadModel.removeAllElements();
+		for (Road r : roads)
+			_RoadModel.addElement(r);
 		
 		setLocation(getParent().getLocation().x + 100, getParent().getLocation().y + 100);
 		// Probad por ejemplo con +50
 
 		setVisible(true); 
 
-		return getVehicle();
+		return getRoad();
 	}
 	
 
-	Vehicle getVehicle() {
-		return (Vehicle) _vehiclesModel.getSelectedItem();// se lo pido al modelo
+	Road getRoad() {
+		return (Road) _RoadModel.getSelectedItem();// se lo pido al modelo
 	}
 
 	@Override
