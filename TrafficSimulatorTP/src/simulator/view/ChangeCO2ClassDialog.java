@@ -22,6 +22,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import simulator.control.Controller;
 import simulator.misc.Pair;
 import simulator.model.Event;
 import simulator.model.NewSetContClassEvent;
@@ -29,30 +30,26 @@ import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
 
-public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
+public class ChangeCO2ClassDialog extends JDialog{
 	
 	private static final long serialVersionUID = 1L;
 
-	//private int _status; //para controlar la salida de nuestro cuadro de diálogo
+	private int _status; //para controlar la salida de nuestro cuadro de diálogo
 	private JComboBox<Vehicle> _vehicles;
 	private DefaultComboBoxModel<Vehicle> _vehiclesModel;
 	private JComboBox<Integer> CO2Combo;
 	private Integer CO2;
 	private int Time0 = 1;
 	private int ticks; 
-	private RoadMap mapa;
-	private Vehicle vehicle;
 	
 	public ChangeCO2ClassDialog(Frame parent) {
-		super(parent, true); //el segundo argumento indica que la ventana es modal,e.d.,
-							//que hasta que no acepte o cancele no me deja interactuar
-							//con la anterior.
+		super(parent, true); 
 		initGUI();
 	}
 	
 	private void initGUI() {
 
-		//_status = 0; //Por si cierro la ventana sin hacer clic en un botón
+		_status = 0; //Por si cierro la ventana sin hacer clic en un botón
 
 		setTitle("Change CO2 Class");
 		JPanel mainPanel = new JPanel();
@@ -75,7 +72,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		viewsPanel.add(VehicleMsg);
 		_vehiclesModel = new DefaultComboBoxModel<>();
 		_vehicles = new JComboBox<>(_vehiclesModel);
-		_vehicles.addActionListener(new ActionListener() {
+		/*_vehicles.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<Vehicle> vehicles = new ArrayList<Vehicle>();
@@ -84,13 +81,16 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 				}
 				vehicle = openV(vehicles);
 			}
-		});
+		});*/
 		viewsPanel.add(_vehicles);
 		
 		JLabel CO2Msg = new JLabel("CO2 Class: ");
 		CO2Msg.setAlignmentX(LEFT_ALIGNMENT);
 		viewsPanel.add(CO2Msg);
-		Integer[] valores = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+		Integer[] valores = new Integer[11];
+		for (int i = 0; i <= 10; ++i) {
+			valores[i] = i; 
+		}
 		CO2Combo = new JComboBox<Integer>(valores);
 		CO2Combo.addActionListener(new ActionListener() {
 			@Override
@@ -132,11 +132,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//_status = 1;
-				List<Pair<String,Integer>> ws = new ArrayList<Pair<String,Integer>>();
-				Pair<String,Integer> auxPair = new Pair<String,Integer>(vehicle.getId(), CO2);
-				ws.add(auxPair);
-				new NewSetContClassEvent(ticks, ws); //TODO
+				_status = 1;
 				mainPanel.setVisible(false);
 			}
 		});
@@ -145,7 +141,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		//no se si aqu� hay que indicar que hemos metido un nuevo observador o keloke
 	}
 	
-	public Vehicle openV(List<Vehicle> vehicles) { //si se ve raro cambiarlo xd
+	public int openV(List<Vehicle> vehicles) { //si se ve raro cambiarlo xd
 		_vehiclesModel.removeAllElements();
 		for (Vehicle v : vehicles)
 			_vehiclesModel.addElement(v);
@@ -155,46 +151,19 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 		setVisible(true); 
 
-		return getVehicle();
+		return _status;
 	}
-	
+
+	public Integer getCO2() {
+		return CO2;
+	}
+
+	public int getTicks() {
+		return ticks;
+	}
 
 	Vehicle getVehicle() {
 		return (Vehicle) _vehiclesModel.getSelectedItem();// se lo pido al modelo
-	}
-
-	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-		
-	}
-
-	@Override
-	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-	}
-
-	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		mapa = map;
-	}
-
-	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-		
-	}
-
-	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-		
-	}
-
-	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

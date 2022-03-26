@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -22,38 +21,29 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import simulator.misc.Pair;
-import simulator.model.Event;
 import simulator.model.Road;
-import simulator.model.RoadMap;
-import simulator.model.SetWeatherEvent;
-import simulator.model.TrafficSimObserver;
 import simulator.model.Weather;
 
-public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
+public class ChangeWeatherDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 
-	//private int _status; //para controlar la salida de nuestro cuadro de diálogo
+	private int _status; //para controlar la salida de nuestro cuadro de diálogo
 	private JComboBox<Road> _roads;
 	private DefaultComboBoxModel<Road> _RoadModel;
 	private JComboBox<Weather> weatherCombo;
 	private Weather weather;
-	private int Time0 = 1;
+	private static final int Time0 = 1;
 	private int ticks; 
-	private RoadMap mapa;
-	private Road road;
 	
 	public ChangeWeatherDialog(Frame parent) {
-		super(parent, true); //el segundo argumento indica que la ventana es modal,e.d.,
-							//que hasta que no acepte o cancele no me deja interactuar
-							//con la anterior.
+		super(parent, true); 
 		initGUI();
 	}
 	
 	private void initGUI() {
 
-		//_status = 0; //Por si cierro la ventana sin hacer clic en un botón
+		_status = 0; //Por si cierro la ventana sin hacer clic en un botón
 
 		setTitle("Change Road Weather");
 		JPanel mainPanel = new JPanel();
@@ -76,7 +66,7 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		viewsPanel.add(RoadMsg);
 		_RoadModel = new DefaultComboBoxModel<>();
 		_roads = new JComboBox<>(_RoadModel);
-		_roads.addActionListener(new ActionListener() {
+		/*_roads.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<Road> roads = new ArrayList<Road>();
@@ -85,13 +75,13 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 				}
 				road = openR(roads);
 			}
-		});
+		});*/
 		viewsPanel.add(_roads);
 		
 		JLabel weatherMsg = new JLabel("Weather: ");
 		weatherMsg.setAlignmentX(LEFT_ALIGNMENT);
 		viewsPanel.add(weatherMsg);
-		Weather[] valores = Weather.values(); //TODO optimizar
+		Weather[] valores = Weather.values(); //TODO optimizar 
 		weatherCombo = new JComboBox<Weather>(valores);
 		weatherCombo.addActionListener(new ActionListener() {
 			@Override
@@ -125,18 +115,14 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 			}
 		});
 		cancelokPanel.add(btnCancel);
-		cancelokPanel.setBorder(BorderFactory.createEmptyBorder(500, 25, 25, 25));
+		cancelokPanel.setBorder(BorderFactory.createEmptyBorder(500, 25, 25, 25)); //TODO
 		
 		
 		JButton btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//_status = 1;
-				List<Pair<String,Weather>> ws = new ArrayList<Pair<String,Weather>>();
-				Pair<String,Weather> auxPair = new Pair<String,Weather>(road.getId(), weather);
-				ws.add(auxPair);
-				new SetWeatherEvent(ticks, ws); //TODO
+				_status = 1;
 				mainPanel.setVisible(false);
 			}
 		});
@@ -145,7 +131,7 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		//no se si aqu� hay que indicar que hemos metido un nuevo observador o keloke
 	}
 	
-	public Road openR(List<Road> roads) { //si se ve raro cambiarlo xd
+	public int openR(List<Road> roads) { //si se ve raro cambiarlo xd
 		_RoadModel.removeAllElements();
 		for (Road r : roads)
 			_RoadModel.addElement(r);
@@ -155,46 +141,19 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 
 		setVisible(true); 
 
-		return getRoad();
+		return _status;
 	}
-	
+
+	public Weather getWeather() {
+		return weather;
+	}
+
+	public int getTicks() {
+		return ticks;
+	}
 
 	Road getRoad() {
 		return (Road) _RoadModel.getSelectedItem();// se lo pido al modelo
-	}
-
-	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-		
-	}
-
-	@Override
-	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-	}
-
-	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		mapa = map;
-	}
-
-	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-		
-	}
-
-	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		mapa = map;
-		
-	}
-
-	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
