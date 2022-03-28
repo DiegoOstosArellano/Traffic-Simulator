@@ -33,12 +33,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private RoadMap mapa;
 	private boolean _stopped;
 	private int ticks;
+	private int time;
 	private final static int time0 = 1;
-	
+	private JButton loadButton;
+	private JButton CO2Button;
+	private JButton WeatherButton;
+	private JButton RunButton;
+	private JButton StopButton;
+	private JButton ExitButton;
 	public ControlPanel(Controller ctrl) {
 		_ctrl = ctrl;
 		_ctrl.addObserver(this);
 		_stopped = true;
+		fc = new JFileChooser(); 
 		initGUI();
 	}
 	
@@ -46,10 +53,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		JToolBar barra = new JToolBar();
 		add(barra, BorderLayout.NORTH);
 
-		JButton load = new JButton();
-		load.setActionCommand("load");
-		load.setToolTipText("Load a file");
-		load.addActionListener(new ActionListener() {
+		loadButton = new JButton();
+		loadButton.setActionCommand("load");
+		loadButton.setToolTipText("Load a file");
+		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int ret = fc.showOpenDialog(ControlPanel.this);
 				//según salga yo de esta ventana, "ret" tomará un valor u otro
@@ -64,65 +71,66 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				}
 		}});
 		
-		load.setIcon(new ImageIcon("icons/open.png"));
-		barra.add(load);
+		loadButton.setIcon(new ImageIcon("resources/icons/open.png"));
+		barra.add(loadButton);
 		barra.addSeparator();// probadlo con esto y sin esto
 		
 		
-		JButton CO2Botton = new JButton();
-		CO2Botton.setActionCommand("Change CO2");
-		CO2Botton.setToolTipText("Change CO2");
-		CO2Botton.addActionListener(new ActionListener() {
+		CO2Button = new JButton();
+		CO2Button.setActionCommand("Change CO2");
+		CO2Button.setToolTipText("Change CO2");
+		CO2Button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				select_vehicle();
 			}
 		});
-		CO2Botton.setIcon(new ImageIcon("icons/co2class.png"));
-		barra.add(CO2Botton);
+		CO2Button.setIcon(new ImageIcon("resources/icons/co2class.png"));
+		barra.add(CO2Button);
 		
-		JButton WeatherBotton = new JButton();
-		WeatherBotton.setActionCommand("Change weather");
-		WeatherBotton.setToolTipText("Change weather");
-		WeatherBotton.addActionListener(new ActionListener() {
+		WeatherButton = new JButton();
+		WeatherButton.setActionCommand("Change weather");
+		WeatherButton.setToolTipText("Change weather");
+		WeatherButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				select_weather();
 			}
 		});
-		WeatherBotton.setIcon(new ImageIcon("icons/weather.png"));
-		barra.add(WeatherBotton);
+		WeatherButton.setIcon(new ImageIcon("resources/icons/weather.png"));
+		barra.add(WeatherButton);
 		barra.addSeparator();
 		
-		JButton RunBotton = new JButton();
-		RunBotton.setActionCommand("Run simulation");
-		RunBotton.setToolTipText("Run simulation with n ticks");
-		RunBotton.addActionListener(new ActionListener() {
+		RunButton = new JButton();
+		RunButton.setActionCommand("Run simulation");
+		RunButton.setToolTipText("Run simulation with n ticks");
+		RunButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				_stopped = false;
+				enableToolBar(false);
 				run_sim(ticks);
 			}
 		});
-		RunBotton.setIcon(new ImageIcon("icons/run.png"));
-		barra.add(RunBotton);
+		RunButton.setIcon(new ImageIcon("resources/icons/run.png"));
+		barra.add(RunButton);
 		
-		JButton StopBotton = new JButton();
-		StopBotton.setActionCommand("Stop simulation");
-		StopBotton.setToolTipText("Stop simulation");
-		StopBotton.addActionListener(new ActionListener() {
+		StopButton = new JButton();
+		StopButton.setActionCommand("Stop simulation");
+		StopButton.setToolTipText("Stop simulation");
+		StopButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				stop();
 			}
 		});
-		StopBotton.setIcon(new ImageIcon("icons/stop.png"));
-		barra.add(StopBotton);
+		StopButton.setIcon(new ImageIcon("resources/icons/stop.png"));
+		barra.add(StopButton);
 		barra.addSeparator();
 		
 		JLabel ticksMsg = new JLabel("Ticks: ");
 		ticksMsg.setAlignmentX(LEFT_ALIGNMENT);
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(time0, 1, 5000, 10));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(time0, 1, 5000, 1));
 		spinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -130,11 +138,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			}
 		});
 		barra.add(ticksMsg);
+		barra.add(spinner);
+		barra.addSeparator(); //TODO ver como darle más separación
+		barra.addSeparator();
 		
-		JButton ExitBotton = new JButton();
-		ExitBotton.setActionCommand("Exit simulation");
-		ExitBotton.setToolTipText("Exit simulation");
-		ExitBotton.addActionListener(new ActionListener() {
+		ExitButton = new JButton();
+		ExitButton.setActionCommand("Exit simulation");
+		ExitButton.setToolTipText("Exit simulation");
+		ExitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int n = JOptionPane.showOptionDialog(ControlPanel.this,
@@ -144,20 +155,20 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 				if (n == 0) System.exit(0);
 			}
 		});
-		ExitBotton.setIcon(new ImageIcon("icons/stop.png"));
-		barra.add(ExitBotton, BorderLayout.EAST);
+		ExitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
+		barra.add(ExitButton, BorderLayout.EAST);
 		
 		//this.pack();
 		this.setVisible(true);
+		
 	}
 	
 	private void run_sim(int n) {
         if ( n>0 && !_stopped ) {
             try {
-                _ctrl.run(1, null); //TODO whtahafa
+                _ctrl.run(1); //TODO
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(ControlPanel.this, "An error occured. " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-                //setButtonsEnabled(true);
                 _stopped = true;
                 return;
             }
@@ -168,8 +179,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
                 }
             });
         } else {
-        	//setButtonsEnabled(true);
-        	//enableToolBar(true); //TODO preguntar
+        	enableToolBar(true); 
             _stopped = true;
         }
     }
@@ -192,13 +202,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 								//no es visible porque se hace visible en el open
 
 		if (status == 0) {
-			System.out.println("Canceled");
+			//System.out.println("Canceled");
 		} else {
+			//Poner en el action performanced
 			if (dialog.getVehicle() != null) {
 				List<Pair<String,Integer>> ws = new ArrayList<Pair<String,Integer>>();
 				Pair<String,Integer> auxPair = new Pair<String,Integer>(dialog.getVehicle().getId(), dialog.getCO2());
 				ws.add(auxPair);
-				_ctrl.addEvent(new NewSetContClassEvent(dialog.getTicks(), ws));
+				_ctrl.addEvent(new NewSetContClassEvent(dialog.getTicks() + time, ws));
 			}
 		}
 	}
@@ -215,44 +226,55 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		int status = dialog.openR(roads); 
 
 		if (status == 0) {
-			System.out.println("Canceled");
+			
 		} else {
 			if (dialog.getRoad() != null) {
 				List<Pair<String,Weather>> ws = new ArrayList<Pair<String,Weather>>();
 				Pair<String,Weather> auxPair = new Pair<String,Weather>(dialog.getRoad().getId(), dialog.getWeather());
 				ws.add(auxPair);
-				_ctrl.addEvent(new SetWeatherEvent(dialog.getTicks(), ws));
+				_ctrl.addEvent(new SetWeatherEvent(dialog.getTicks() + time, ws)); 
 			}
 		}
+	}
+	private void enableToolBar(boolean visible) {
+		this.loadButton.setEnabled(visible);
+		this.CO2Button.setEnabled(visible);
+		this.WeatherButton.setEnabled(visible);
+		this.RunButton.setEnabled(visible);
+		this.ExitButton.setEnabled(visible);
 	}
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		mapa = map;	
+		this.time = time;
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		mapa = map;
+		this.time = time;
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		mapa = map;
+		this.time = time;
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		mapa = map;
+		this.time = time;
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		mapa = map;
+		this.time = time;
 	}
 
 	@Override
-	public void onError(String err) { //TODO enterarnos bien
-		System.out.println(err);
+	public void onError(String err) { 
 	}
 }

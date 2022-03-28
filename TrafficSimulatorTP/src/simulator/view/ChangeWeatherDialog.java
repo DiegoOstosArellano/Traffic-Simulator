@@ -2,13 +2,12 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -25,121 +24,166 @@ import simulator.model.Road;
 import simulator.model.Weather;
 
 public class ChangeWeatherDialog extends JDialog {
-	
+
 	private static final long serialVersionUID = 1L;
 
-	private int _status; //para controlar la salida de nuestro cuadro de di√°logo
+	private int _status; // para controlar la salida de nuestro cuadro de di√°logo
 	private JComboBox<Road> _roads;
 	private DefaultComboBoxModel<Road> _RoadModel;
 	private JComboBox<Weather> weatherCombo;
 	private Weather weather;
 	private static final int Time0 = 1;
-	private int ticks; 
-	
+	private int ticks;
+
 	public ChangeWeatherDialog(Frame parent) {
-		super(parent, true); 
+		super(parent, true);
 		initGUI();
 	}
-	
+
 	private void initGUI() {
 
-		_status = 0; //Por si cierro la ventana sin hacer clic en un bot√≥n
+		_status = 0; // Por si cierro la ventana sin hacer clic en un bot√≥n
 
 		setTitle("Change Road Weather");
-		JPanel mainPanel = new JPanel();
-		//mainPanel.setLayout(new BorderLayout());
-		setContentPane(mainPanel);
 
-		JLabel helpMsg = new JLabel("Schedule an event to change the weather of a road after a given number of simulation ticks from now.");
-		helpMsg.setAlignmentX(LEFT_ALIGNMENT);
-		mainPanel.add(helpMsg, BorderLayout.NORTH);
-		mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));//para que no salga 
-											//pegado al bot√≥n de arriba
+		// Creamos un panel principal donde meter cada uno de los paneles secundarios
+		JPanel mainPanel = new JPanel(new BorderLayout());
 
+		JPanel messagePanel = new JPanel();
+		messagePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		messagePanel.setPreferredSize(new Dimension(180, 40));
+
+		// Configuramos las etiquetas del messagePanel
+		JLabel upLabel = new JLabel("Schedule an event to change the weather of a road");
+		JLabel downLabel = new JLabel("after a given number of simulation ticks from now.");
+		messagePanel.add(upLabel);
+		messagePanel.add(downLabel);
+		setContentPane(messagePanel);
+
+		// Ponemos el panel de mensaje en la parte norte del mainPanel
+		mainPanel.add(messagePanel, BorderLayout.NORTH);
+
+		// Creamos el viewsPanel para poner la linea de enmedio
 		JPanel viewsPanel = new JPanel();
-		viewsPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-		setContentPane(viewsPanel);
-		mainPanel.add(viewsPanel, BorderLayout.CENTER);
-		
-		JLabel RoadMsg = new JLabel("Road: ");
-		RoadMsg.setAlignmentX(LEFT_ALIGNMENT);
-		viewsPanel.add(RoadMsg);
-		_RoadModel = new DefaultComboBoxModel<>();
+		viewsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+		// Creamos un roadsPanel para incluir el label y el comboBox
+		JPanel roadsPanel = new JPanel();
+		roadsPanel.setLayout(new BoxLayout(roadsPanel, BoxLayout.X_AXIS));
+
+		// Creamos el label y la lista de vehiculos para el vehiclePanel
+		JLabel roadsLabel = new JLabel("Road: ");
+		roadsPanel.add(roadsLabel);
+		this._RoadModel = new DefaultComboBoxModel<>();
 		_roads = new JComboBox<>(_RoadModel);
-		/*_roads.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				List<Road> roads = new ArrayList<Road>();
-				for (Road r: mapa.getRoads()) {
-					roads.add(r);
-				}
-				road = openR(roads);
-			}
-		});*/
-		viewsPanel.add(_roads);
-		
-		JLabel weatherMsg = new JLabel("Weather: ");
-		weatherMsg.setAlignmentX(LEFT_ALIGNMENT);
-		viewsPanel.add(weatherMsg);
-		Weather[] valores = Weather.values(); //TODO optimizar 
+
+		// TODO como hacer para que se seleccionen los vehicles
+		/*
+		 * _roads.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) { List<Road> roads = new
+		 * ArrayList<Road>(); for (Road r: mapa.getRoads()) { roads.add(r); } road =
+		 * openR(roads); } });
+		 */
+
+		roadsPanel.add(_roads);
+
+		// AÒadimos el vehiclePanel al panel de viewsPanel
+		viewsPanel.add(roadsPanel);
+
+		// Creamos el panel de wheaterPanel
+		JPanel wheaterPanel = new JPanel();
+		wheaterPanel.setLayout(new BoxLayout(wheaterPanel, BoxLayout.X_AXIS));
+
+		// Creamos etiqueta y array de contClass(1-10)
+		JLabel weatherLabel = new JLabel("Weather: ");
+		wheaterPanel.add(weatherLabel);
+		Weather[] valores = Weather.values(); // TODO optimizar
 		weatherCombo = new JComboBox<Weather>(valores);
-		weatherCombo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				weather = (Weather) weatherCombo.getSelectedItem();
-			}
-		});
-		viewsPanel.add(weatherCombo);
-		
-		JLabel ticksMsg = new JLabel("Ticks: ");
-		ticksMsg.setAlignmentX(LEFT_ALIGNMENT);
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Time0, 1, 5000, 10));
+
+		/*
+		 * weatherCombo.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) { weather = (Weather)
+		 * weatherCombo.getSelectedItem(); } });
+		 */
+
+		wheaterPanel.add(weatherCombo);
+
+		// AÒadimos el vehiclePanel al panel de viewsPanel
+		viewsPanel.add(wheaterPanel);
+
+		// Creamos ticksPanel
+		JPanel ticksPanel = new JPanel();
+		ticksPanel.setLayout(new BoxLayout(ticksPanel, BoxLayout.X_AXIS));
+
+		// AÒadimos etiqueta y spinner para los ticks
+		JLabel ticksLabel = new JLabel("Ticks: ");
+		ticksPanel.add(ticksLabel);
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Time0, 1, Integer.MAX_VALUE, 1));
 		spinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				ticks = (Integer) spinner.getValue();
 			}
 		});
-		viewsPanel.add(ticksMsg);
-		
-		JPanel cancelokPanel = new JPanel();
-		cancelokPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-		setContentPane(cancelokPanel);
-		mainPanel.add(viewsPanel, BorderLayout.SOUTH);
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+		ticksPanel.add(spinner);
+		spinner.setPreferredSize(new Dimension(60, 20));
+
+		// AÒadimos el ticksPanel al viesPanel
+		viewsPanel.add(ticksPanel);
+
+		// AÒadimos el panel que se localiza en el center al mainPanel
+		mainPanel.add(viewsPanel, BorderLayout.CENTER);
+
+		// Creamos okCancelPanel para los dos botones de la parte inferior (South) de la
+		// consola
+		JPanel okCancelPanel = new JPanel();
+		okCancelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+		// Creamos boton para cancel
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ChangeWeatherDialog.this.dispose();
 			}
 		});
-		cancelokPanel.add(btnCancel);
-		cancelokPanel.setBorder(BorderFactory.createEmptyBorder(500, 25, 25, 25)); //TODO
-		
-		
+
+		// Lo aÒadimos al panel okCancelPanel
+		okCancelPanel.add(cancel);
+
+		// Creamos boton para ok
 		JButton btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Faltaria diferencia si se ha seleccionado algo
 				_status = 1;
-				mainPanel.setVisible(false);
+				setVisible(false);
 			}
 		});
-		cancelokPanel.add(btnOk);
-		
-		//no se si aquÌ hay que indicar que hemos metido un nuevo observador o keloke
+		// Lo aÒadimos al panel okCancelPanel
+		okCancelPanel.add(btnOk);
+
+		// AÒadimos okCancelPanel al mainPanel
+		mainPanel.add(okCancelPanel, BorderLayout.SOUTH);
+
+		setContentPane(mainPanel);
+		setMinimumSize(new Dimension(400, 200));
+		setPreferredSize(new Dimension(400, 200));
+		setVisible(false);
 	}
-	
-	public int openR(List<Road> roads) { //si se ve raro cambiarlo xd
+
+	public int openR(List<Road> roads) { // si se ve raro cambiarlo xd
 		_RoadModel.removeAllElements();
 		for (Road r : roads)
 			_RoadModel.addElement(r);
-		
+
 		setLocation(getParent().getLocation().x + 100, getParent().getLocation().y + 100);
 		// Probad por ejemplo con +50
 
-		setVisible(true); 
+		setVisible(true);
 
 		return _status;
 	}
@@ -155,5 +199,5 @@ public class ChangeWeatherDialog extends JDialog {
 	Road getRoad() {
 		return (Road) _RoadModel.getSelectedItem();// se lo pido al modelo
 	}
-	
+
 }
