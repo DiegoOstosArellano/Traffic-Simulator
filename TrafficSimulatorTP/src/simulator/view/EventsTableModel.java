@@ -22,7 +22,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public EventsTableModel(Controller controller) {
 		this._events = null;
 		controller.addObserver(this);
-		
 	}
 
 
@@ -30,7 +29,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		this._events = events;
 		this.fireTableStructureChanged();
-		
 	}
 
 	@Override
@@ -41,30 +39,24 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
 		this._events = events; 
 		this.fireTableStructureChanged();
-		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		this._events = events;
 		this.fireTableStructureChanged();
-		
 	}
 
 	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+	public void onRegister(RoadMap map, List<Event> events, int time) { //TODO
+		this._events = events;
+		this.fireTableStructureChanged();
 	}
 
 	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onError(String err) {}
 
 	@Override
 	public int getColumnCount() {
@@ -78,13 +70,10 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		
 		if(col == 0)
-			return this._events.get(row).getTime(); 
+			return this._events.get(row).getTime();
 		else
 			return this._events.get(row).toString(); 
-		 
-		
 	}
 	
 	

@@ -79,7 +79,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 	@Override
 	public void addObserver(TrafficSimObserver o) {
 		lista_observadores.add(o);
-		for (TrafficSimObserver to: lista_observadores) {
+		for (TrafficSimObserver to: lista_observadores) { //TODO socorro
 			to.onRegister(mapa_carreteras, lista_eventos, time);
 		}
 	}

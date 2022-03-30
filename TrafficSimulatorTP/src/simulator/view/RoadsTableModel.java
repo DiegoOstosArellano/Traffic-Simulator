@@ -22,7 +22,7 @@ public class RoadsTableModel  extends AbstractTableModel implements TrafficSimOb
 	
 	public RoadsTableModel(Controller controller) {
 		this._roads = null; 
-		controller.addObserver(this);;
+		controller.addObserver(this);
 	}
 	@Override
 	public int getColumnCount() {
@@ -83,9 +83,6 @@ public class RoadsTableModel  extends AbstractTableModel implements TrafficSimOb
 	}
 
 	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onError(String err) {}
 
 }

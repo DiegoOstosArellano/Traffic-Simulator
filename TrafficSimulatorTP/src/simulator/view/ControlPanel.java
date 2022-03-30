@@ -33,7 +33,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	private JFileChooser fc;
 	private RoadMap mapa;
 	private boolean _stopped;
-	private int ticks;
+	private int ticks = 1;
 	private int time;
 	private final static int time0 = 1;
 	private JButton loadButton;

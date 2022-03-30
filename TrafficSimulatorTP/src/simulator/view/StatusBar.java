@@ -1,10 +1,10 @@
 package simulator.view;
 
-
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -28,20 +28,21 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 
 	private void initGUI() {
-		
-		JPanel mainPanel = new JPanel();
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		add(mainPanel, FlowLayout.LEFT);
 
 		JPanel timePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 		timeLabel = new JLabel("Time: " + time);
 		timePanel.add(timeLabel);
-
+		
 		JPanel eventPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		eventLabel = new JLabel();
 		eventPanel.add(eventLabel);
 		
 		mainPanel.add(timePanel);
+		mainPanel.add(Box.createRigidArea(new Dimension(50, 20)));
 		mainPanel.add(eventPanel);
 		mainPanel.setVisible(true);
 		this.setVisible(true);
