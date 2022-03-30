@@ -142,9 +142,13 @@ public class Junction extends SimulatedObject{
 		for(int i = 0; i < this.carreteras_entrantes.size(); i++) {
 			str.append(this.carreteras_entrantes.get(i).getId() + ":[");
 			List<Vehicle> lista_vehicles = this.carretera_cola.get(carreteras_entrantes.get(i)); 
-			for(int j = 0; j < lista_vehicles.size()-1; ++j)
-				str.append(lista_vehicles.get(j).getId() + ", "); 
-			str.append(lista_vehicles.get(lista_vehicles.size()- 1) + "] ");
+			if(lista_vehicles == null) {
+				for(int j = 0; j < lista_vehicles.size()-1; ++j)
+					str.append(lista_vehicles.get(j).getId() + ", "); 
+				str.append(lista_vehicles.get(lista_vehicles.size()- 1));
+			}
+			str.append("] ");
+			
 		}
 		return str.toString();
 	}
