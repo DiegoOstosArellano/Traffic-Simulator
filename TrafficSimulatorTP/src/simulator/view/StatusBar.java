@@ -1,6 +1,7 @@
 package simulator.view;
 
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 
 	private void initGUI() {
-		//this.setLayout(new BorderLayout());
 		
 		JPanel mainPanel = new JPanel();
 		add(mainPanel, FlowLayout.LEFT);
@@ -52,7 +52,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		this.time = time;
 		this.timeLabel.setText("Time: " + time);
-
+		this.eventLabel.setText("");
 	}
 
 	@Override
