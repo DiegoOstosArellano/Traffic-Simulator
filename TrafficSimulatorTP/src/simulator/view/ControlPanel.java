@@ -1,6 +1,8 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -132,6 +134,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		JLabel ticksMsg = new JLabel("Ticks: ");
 		ticksMsg.setAlignmentX(LEFT_ALIGNMENT);
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(time0, 1, 5000, 1));
+		spinner.setMaximumSize(new Dimension(40,40));
 		spinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -140,9 +143,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		});
 		barra.add(ticksMsg);
 		barra.add(spinner);
+		barra.add(Box.createRigidArea(new Dimension(600, 20)));
 		barra.addSeparator(); //TODO ver como darle más separación
-		barra.addSeparator();
-		
 		ExitButton = new JButton();
 		ExitButton.setActionCommand("Exit simulation");
 		ExitButton.setToolTipText("Exit simulation");
@@ -157,7 +159,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			}
 		});
 		ExitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
-		barra.add(ExitButton, BorderLayout.EAST);
+		barra.add(ExitButton);
 		
 		//this.pack();
 		this.setVisible(true);
