@@ -2,7 +2,6 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

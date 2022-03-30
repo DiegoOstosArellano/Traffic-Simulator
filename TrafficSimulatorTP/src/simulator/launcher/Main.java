@@ -104,8 +104,7 @@ public class Main {
 	
 	private static void parseModeOption(CommandLine line) {
 		if (line.hasOption("m")) {
-			String m = line.getOptionValue("m", modeDefaultValue); 
-			mode = line.getOptionValue("m");
+			mode = line.getOptionValue("m", modeDefaultValue);
 		}
 		else {
 			mode = modeDefaultValue;

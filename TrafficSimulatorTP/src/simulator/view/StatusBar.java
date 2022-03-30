@@ -1,12 +1,11 @@
 package simulator.view;
 
-import java.awt.BorderLayout;
+
 import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 
 import simulator.control.Controller;
 import simulator.model.Event;

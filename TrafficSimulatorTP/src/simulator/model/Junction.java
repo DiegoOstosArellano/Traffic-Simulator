@@ -1,6 +1,6 @@
 package simulator.model;
 
-import java.awt.RenderingHints;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,7 +10,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import simulator.misc.Pair;
 
 public class Junction extends SimulatedObject{
 	
@@ -135,6 +134,19 @@ public class Junction extends SimulatedObject{
 
 	public List<Road> getInRoads() {
 		return carreteras_entrantes;
+	}
+
+	public String queuesToString() {
+		StringBuilder str = new StringBuilder();
+		
+		for(int i = 0; i < this.carreteras_entrantes.size(); i++) {
+			str.append(this.carreteras_entrantes.get(i).getId() + ":[");
+			List<Vehicle> lista_vehicles = this.carretera_cola.get(carreteras_entrantes.get(i)); 
+			for(int j = 0; j < lista_vehicles.size()-1; ++j)
+				str.append(lista_vehicles.get(j).getId() + ", "); 
+			str.append(lista_vehicles.get(lista_vehicles.size()- 1) + "] ");
+		}
+		return str.toString();
 	}
 	
 	
