@@ -10,6 +10,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.misc.Pair;
+
 public class Junction extends SimulatedObject{
 	
 	private List<Road> carreteras_entrantes;
@@ -134,5 +136,6 @@ public class Junction extends SimulatedObject{
 	public List<Road> getInRoads() {
 		return carreteras_entrantes;
 	}
+	
 	
 }

@@ -24,8 +24,7 @@ public class MainWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Controller _ctrl;
-	private String[] columns = {"Id", "Location", "Iterinary", "CO2 Class", "Max Speed", "Speed", "Total CO2", "Distance"};
-	
+
 	public MainWindow(Controller ctrl) {
 		super("Traffic Simulator");
 		_ctrl = ctrl;
@@ -67,11 +66,17 @@ public class MainWindow extends JFrame {
 		JPanel roadsView = createViewPanel(new JTable(new RoadsTableModel(_ctrl)), "Roads");
 		roadsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(roadsView);
-		/*
+		
+		//JunctionPanel
+		JPanel junctionView = createViewPanel(new JTable(new JunctionsTableModel(_ctrl)), "Junctions");
+		junctionView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(junctionView);
+		
 		// maps
 		JPanel mapView = createViewPanel(new MapComponent(_ctrl), "Map");
 		mapView.setPreferredSize(new Dimension(500, 400));
 		mapsPanel.add(mapView);
+		/*
 		// TODO add a map for MapByRoadComponent
 		// ...*/
 		

@@ -38,8 +38,8 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
+		this._vehicles = map.getVehicles(); 
+		this.fireTableDataChanged();
 	}
 
 	@Override
@@ -66,10 +66,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public int getRowCount() {
-		if(this._vehicles == null)
-			return 0; 
-		else
-			return this._vehicles.size(); 
+		return _vehicles == null ? 0 : _vehicles.size();
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<Event> _events;
-	private String[] EventsColumns = {"Time", "Desc"};;
+	private String[] EventsColumns = {"Time", "Desc"};
 	
 	public EventsTableModel(Controller controller) {
 		this._events = null;
@@ -73,10 +73,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public int getRowCount() {
-		if(this._events == null)
-			return 0; 
-		else
-			return this._events.size(); 
+		return _events == null ? 0 : _events.size();
 	}
 
 	@Override
@@ -89,6 +86,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		 
 		
 	}
+	
 	
 	@Override
 	public String getColumnName(int c) {

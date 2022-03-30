@@ -1,10 +1,12 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -26,6 +28,8 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 
 	private void initGUI() {
+		//this.setLayout(new BorderLayout());
+		
 		JPanel mainPanel = new JPanel();
 		add(mainPanel, FlowLayout.LEFT);
 
@@ -37,10 +41,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		JPanel eventPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		eventLabel = new JLabel();
 		eventPanel.add(eventLabel);
-		/*
-		 * eventLabel = new JLabel("event added: " + eventoActual.toString());
-		 * //eventPanel.add(eventLabel);
-		 */
+		
 		mainPanel.add(timePanel);
 		mainPanel.add(eventPanel);
 		mainPanel.setVisible(true);
@@ -82,8 +83,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onError(String err) {
-		// TODO Auto-generated method stub
-
+		this.eventLabel.setText("An error occur: " + err); 
 	}
 
 }

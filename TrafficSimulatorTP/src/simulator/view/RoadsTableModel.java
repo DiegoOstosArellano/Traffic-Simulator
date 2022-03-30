@@ -32,10 +32,7 @@ public class RoadsTableModel  extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public int getRowCount() {
-		if(this._roads == null)
-			return 0; 
-		else
-			return this._roads.size(); 
+		return _roads == null ? 0 : _roads.size();
 	}
 
 	@Override
@@ -83,7 +80,7 @@ public class RoadsTableModel  extends AbstractTableModel implements TrafficSimOb
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		this._roads = map.getRoads(); 
-		
+		this.fireTableDataChanged();
 	}
 
 	@Override

@@ -50,6 +50,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 	}
 	
 	private void initGUI() {
+		this.setLayout(new BorderLayout());
 		JToolBar barra = new JToolBar();
 		add(barra, BorderLayout.NORTH);
 

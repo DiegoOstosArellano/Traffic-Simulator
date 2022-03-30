@@ -33,7 +33,7 @@ public class ChangeWeatherDialog extends JDialog {
 	private JComboBox<Weather> weatherCombo;
 	private Weather weather;
 	private static final int Time0 = 1;
-	private int ticks;
+	private int ticks = 1;
 
 	public ChangeWeatherDialog(Frame parent) {
 		super(parent, true);
@@ -100,13 +100,13 @@ public class ChangeWeatherDialog extends JDialog {
 		wheaterPanel.add(weatherLabel);
 		Weather[] valores = Weather.values(); // TODO optimizar
 		weatherCombo = new JComboBox<Weather>(valores);
-
-		/*
-		 * weatherCombo.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) { weather = (Weather)
-		 * weatherCombo.getSelectedItem(); } });
-		 */
+		weatherCombo.addActionListener(new ActionListener() {
+		  @Override 
+		  public void actionPerformed(ActionEvent e) { 
+			  weather = (Weather)weatherCombo.getSelectedItem(); 
+			  } 
+		  });
+		 
 
 		wheaterPanel.add(weatherCombo);
 

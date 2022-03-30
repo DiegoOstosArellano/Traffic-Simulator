@@ -21,8 +21,14 @@ public class SetWeatherEvent extends Event {
 			r.setWeather(w.getSecond());
 		}
 	} 
+	
 	@Override
 	public String toString() {
-		return "New SetWeather '";
+		StringBuilder str = new StringBuilder("Chage weather class: ["); 
+		for(int i = 0; i < this.ws.size()-1; ++i)
+			str.append("(" + this.ws.get(i).getFirst() + "," + this.ws.get(i).getSecond() + ") , ");
+		str.append("(" + this.ws.get(this.ws.size() - 1).getFirst() + "," + this.ws.get(this.ws.size()-1).getSecond() + ")]"); 
+		return str.toString();
+		
 	}
 }
