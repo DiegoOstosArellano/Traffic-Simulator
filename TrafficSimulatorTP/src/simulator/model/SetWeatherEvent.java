@@ -21,4 +21,8 @@ public class SetWeatherEvent extends Event {
 			r.setWeather(w.getSecond());
 		}
 	} 
+	@Override
+	public String toString() {
+		return "New SetWeather '";
+	}
 }

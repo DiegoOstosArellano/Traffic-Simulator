@@ -170,4 +170,16 @@ public class Vehicle extends SimulatedObject {
 	public int getTotalCO2() {
 		return total_contamination;
 	}
+
+	public int getDistance() {
+		return this.total_travelled_distance; 
+	}
+
+	public String getItineraryString() {
+		StringBuilder str = new StringBuilder("[");
+		for(int i = 0; i < this.itinerary.size() - 1; ++i)
+			str.append(this.itinerary.get(i)._id + ",");
+		str.append(this.itinerary.get(this.itinerary.size() - 1) + "]"); 
+		return str.toString(); 
+	}
 }

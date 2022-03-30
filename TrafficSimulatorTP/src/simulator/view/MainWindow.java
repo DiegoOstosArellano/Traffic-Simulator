@@ -1,9 +1,11 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -11,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 
 import simulator.control.Controller;
 
@@ -21,7 +24,7 @@ public class MainWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Controller _ctrl;
-
+	private String[] columns = {"Id", "Location", "Iterinary", "CO2 Class", "Max Speed", "Speed", "Total CO2", "Distance"};
 	
 	public MainWindow(Controller ctrl) {
 		super("Traffic Simulator");
@@ -35,9 +38,10 @@ public class MainWindow extends JFrame {
 		
 		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.PAGE_START);
 		mainPanel.add(new StatusBar(_ctrl),BorderLayout.PAGE_END);
-		/*
+		
 		JPanel viewsPanel = new JPanel(new GridLayout(1, 2));
 		mainPanel.add(viewsPanel, BorderLayout.CENTER);
+		
 		
 		JPanel tablesPanel = new JPanel();
 		tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.Y_AXIS));
@@ -48,13 +52,22 @@ public class MainWindow extends JFrame {
 		viewsPanel.add(mapsPanel);
 		
 		// tables
+		//EventsPanel
 		JPanel eventsView =
 		createViewPanel(new JTable(new EventsTableModel(_ctrl)), "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
-		// TODO add other tables
-		// ...
 		
+		//VehiclesPanel
+		JPanel vehiclesView = createViewPanel(new JTable(new VehiclesTableModel(_ctrl)), "Vehicles");
+		vehiclesView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(vehiclesView);
+		
+		//RoadPanel
+		JPanel roadsView = createViewPanel(new JTable(new RoadsTableModel(_ctrl)), "Roads");
+		roadsView.setPreferredSize(new Dimension(500, 200));
+		tablesPanel.add(roadsView);
+		/*
 		// maps
 		JPanel mapView = createViewPanel(new MapComponent(_ctrl), "Map");
 		mapView.setPreferredSize(new Dimension(500, 400));
@@ -68,7 +81,8 @@ public class MainWindow extends JFrame {
 	}
 	private JPanel createViewPanel(JComponent c, String title) {
 		JPanel p = new JPanel( new BorderLayout() );
-		// TODO add a framed border to p with title
+		Border border = BorderFactory.createLineBorder(Color.BLACK, 2); 
+		p.setBorder(BorderFactory.createTitledBorder(border, title));
 		p.add(new JScrollPane(c));
 		return p;
 	}

@@ -22,4 +22,13 @@ public class NewSetContClassEvent extends Event{
 		}
 	} 
 
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder("Chage CO2 class: ["); 
+		for(int i = 0; i < this.cs.size()-1; ++i)
+			str.append("(" + this.cs.get(i).getFirst() + "," + this.cs.get(i).getSecond() + ") , ");
+		str.append("(" + this.cs.get(this.cs.size() - 1).getFirst() + "," + this.cs.get(this.cs.size()-1).getSecond() + ")]"); 
+		return str.toString();
+		
+	}
 }
