@@ -226,7 +226,7 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		update(map);
+		//update(map);
 	}
 
 	@Override

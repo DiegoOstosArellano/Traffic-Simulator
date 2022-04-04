@@ -22,7 +22,7 @@ public class ChangeCO2ClassDialog extends JDialog{
 	private JComboBox<Vehicle> _vehicles;
 	private DefaultComboBoxModel<Vehicle> _vehiclesModel;
 	private JComboBox<Integer> CO2Combo;
-	private Integer CO2;
+	private Integer CO2 = 0;
 	private int Time0 = 1;
 	private int ticks = 1; 
 	
@@ -59,28 +59,16 @@ public class ChangeCO2ClassDialog extends JDialog{
 		JPanel viewsPanel = new JPanel();
 		viewsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		 
-		//Creamos un vehiclesPanel para incluir el label y el comboBox
-		JPanel vehiclesPanel = new JPanel();
-		vehiclesPanel.setLayout(new BoxLayout(vehiclesPanel,BoxLayout.X_AXIS));
-		 
 		//Creamos el label y la lista de vehiculos para el vehiclePanel
 		JLabel vehicleLable = new JLabel("Vehicle: ");
-		vehiclesPanel.add(vehicleLable); 
+		viewsPanel.add(vehicleLable); 
 		this._vehiclesModel = new DefaultComboBoxModel<>();
 		_vehicles = new JComboBox<>(_vehiclesModel);
-		//TODO como hacer para que se seleccionen los vehicles
-		vehiclesPanel.add(_vehicles);
-		
-		//Añadimos el vehiclePanel al panel de viewsPanel
-		viewsPanel.add(vehiclesPanel);
-		
-		//Creamos el panel de contClass
-		JPanel contPanel = new JPanel(); 
-		contPanel.setLayout(new BoxLayout(contPanel,BoxLayout.X_AXIS));
+		viewsPanel.add(_vehicles);
 		
 		//Creamos etiqueta y array de contClass(1-10)
 		JLabel contLabel = new JLabel("CO2 Class: ");
-		contPanel.add(contLabel); 
+		viewsPanel.add(contLabel); 
 		Integer[] valores = new Integer[11];
 		for (int i = 0; i <= 10; ++i) {
 			valores[i] = i; 
@@ -92,18 +80,11 @@ public class ChangeCO2ClassDialog extends JDialog{
 				CO2 = (Integer) CO2Combo.getSelectedItem();
 			}
 		});
-		contPanel.add(CO2Combo);
-		
-		//Añadimos el contPanel al panel de viewsPanel
-		viewsPanel.add(contPanel);
-		
-		//Creamos ticksPanel 
-		JPanel ticksPanel = new JPanel(); 
-		ticksPanel.setLayout(new BoxLayout(ticksPanel,BoxLayout.X_AXIS));
+		viewsPanel.add(CO2Combo);
 		
 		//Añadimos etiqueta y spinner para los ticks
 		JLabel ticksLabel = new JLabel("Ticks: ");
-		ticksPanel.add(ticksLabel); 
+		viewsPanel.add(ticksLabel); 
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Time0, 1, Integer.MAX_VALUE, 1));
 		spinner.addChangeListener(new ChangeListener() {
 			@Override
@@ -111,11 +92,8 @@ public class ChangeCO2ClassDialog extends JDialog{
 				ticks = (Integer) spinner.getValue();
 			}
 		});
-		ticksPanel.add(spinner);
+		viewsPanel.add(spinner);
 		spinner.setPreferredSize(new Dimension(60, 20));
-		
-		//Añadimos el ticksPanel al viesPanel
-		viewsPanel.add(ticksPanel);
 		
 		//Añadimos el panel que se localiza en el center al mainPanel
 		mainPanel.add(viewsPanel, BorderLayout.CENTER);
@@ -156,104 +134,14 @@ public class ChangeCO2ClassDialog extends JDialog{
 		setMinimumSize(new Dimension(400, 200)); 
 		setPreferredSize(new Dimension(400, 200)); 
 		setVisible(false); 
-		/*
-		JPanel mainPanel = new JPanel();
-		//mainPanel.setLayout(new BorderLayout());
-		setContentPane(mainPanel);
-
-		JLabel helpMsg = new JLabel("Schedule an event to change the CO2 class of a vehicle after a given number of simulation ticks from now.");
-		helpMsg.setAlignmentX(LEFT_ALIGNMENT);
-		mainPanel.add(helpMsg, BorderLayout.NORTH);
-		mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));//para que no salga 
-											//pegado al botÃ³n de arriba
-
-		JPanel viewsPanel = new JPanel();
-		viewsPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-		setContentPane(viewsPanel);
-		mainPanel.add(viewsPanel, BorderLayout.CENTER);
-		
-		JLabel VehicleMsg = new JLabel("Vehicle: ");
-		VehicleMsg.setAlignmentX(LEFT_ALIGNMENT);
-		viewsPanel.add(VehicleMsg);
-		_vehiclesModel = new DefaultComboBoxModel<>();
-		_vehicles = new JComboBox<>(_vehiclesModel);
-		/*_vehicles.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				List<Vehicle> vehicles = new ArrayList<Vehicle>();
-				for (Vehicle v: mapa.getVehicles()) {
-					vehicles.add(v);
-				}
-				vehicle = openV(vehicles);
-			}
-		});
-		viewsPanel.add(_vehicles);
-		
-		JLabel CO2Msg = new JLabel("CO2 Class: ");
-		CO2Msg.setAlignmentX(LEFT_ALIGNMENT);
-		viewsPanel.add(CO2Msg);
-		Integer[] valores = new Integer[11];
-		for (int i = 0; i <= 10; ++i) {
-			valores[i] = i; 
-		}
-		CO2Combo = new JComboBox<Integer>(valores);
-		CO2Combo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//lblTexto.setText((Integer) CO2Combo.getSelectedItem());
-				CO2 = (Integer) CO2Combo.getSelectedItem();
-			}
-		});
-		viewsPanel.add(CO2Combo);
-		
-		JLabel ticksMsg = new JLabel("Ticks: ");
-		ticksMsg.setAlignmentX(LEFT_ALIGNMENT);
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Time0, 1, 5000, 10));
-		spinner.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				ticks = (Integer) spinner.getValue();
-			}
-		});
-		viewsPanel.add(ticksMsg);
-		
-		JPanel cancelokPanel = new JPanel();
-		cancelokPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-		setContentPane(cancelokPanel);
-		mainPanel.add(viewsPanel, BorderLayout.SOUTH);
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ChangeCO2ClassDialog.this.dispose();
-			}
-		});
-		cancelokPanel.add(btnCancel);
-		cancelokPanel.setBorder(BorderFactory.createEmptyBorder(500, 25, 25, 25));
-		
-		
-		JButton btnOk = new JButton("Ok");
-		btnOk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_status = 1;
-				mainPanel.setVisible(false);
-			}
-		});
-		cancelokPanel.add(btnOk);
-		
-		//no se si aquí hay que indicar que hemos metido un nuevo observador o keloke
-	*/
 	}
 	
-	public int openV(List<Vehicle> vehicles) { //si se ve raro cambiarlo xd
+	public int openV(List<Vehicle> vehicles) { 
 		_vehiclesModel.removeAllElements();
 		for (Vehicle v : vehicles)
 			_vehiclesModel.addElement(v);
 		
 		setLocation(getParent().getLocation().x + 100, getParent().getLocation().y + 100);
-		// Probad por ejemplo con +50
 
 		setVisible(true); 
 

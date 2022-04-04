@@ -29,24 +29,18 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	private void initGUI() {
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		add(mainPanel, FlowLayout.LEFT);
-
-		JPanel timePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
+		
 		timeLabel = new JLabel("Time: " + time);
-		timePanel.add(timeLabel);
+		add(timeLabel);
 		
-		JPanel eventPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		add(Box.createRigidArea(new Dimension(50, 20)));
+		
 		eventLabel = new JLabel();
-		eventPanel.add(eventLabel);
+		add(eventLabel);
 		
-		mainPanel.add(timePanel);
-		mainPanel.add(Box.createRigidArea(new Dimension(50, 20)));
-		mainPanel.add(eventPanel);
-		mainPanel.setVisible(true);
-		this.setVisible(true);
+		add(Box.createRigidArea(new Dimension(50, 20)));
 
+		setVisible(true);
 	}
 
 	@Override

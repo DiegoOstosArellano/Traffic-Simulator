@@ -146,6 +146,15 @@ public class Vehicle extends SimulatedObject {
 	public int getLocation() {
 		return location;
 	}
+	
+	public String getStatusRoad() {
+		switch (this.status) {
+			case PENDING: return "Pending";
+			case WAITING: return "Waiting:" + this.itinerary.get(last_junction).getId();
+			case TRAVELING: return this.road.getId() + ":" + this.location;
+			default: return "Arrived";
+		}
+	}
 
 	public int getContClass() {
 		return contamination_class;

@@ -142,7 +142,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 		});
 		barra.add(ticksMsg);
 		barra.add(spinner);
-		barra.add(Box.createRigidArea(new Dimension(600, 20)));
+		//barra.add(Box.createRigidArea(new Dimension(600, 20)));
 		barra.addSeparator(); //TODO ver como darle m·s separaciÛn
 		ExitButton = new JButton();
 		ExitButton.setActionCommand("Exit simulation");
@@ -158,6 +158,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			}
 		});
 		ExitButton.setIcon(new ImageIcon("resources/icons/exit.png"));
+		barra.add(Box.createGlue());
 		barra.add(ExitButton);
 		
 		//this.pack();
@@ -199,13 +200,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 			vehicles.add(v);
 		}
 
-		int status = dialog.openV(vehicles); //Abrimos el cuadro de di√°logo 
-								//con nuestros datos, sin esta l√≠nea
-								//no es visible porque se hace visible en el open
+		int status = dialog.openV(vehicles); 
 
-		if (status == 0) {
-			//System.out.println("Canceled");
-		} else {
+		if (status != 0)  {
 			//Poner en el action performanced
 			if (dialog.getVehicle() != null) {
 				List<Pair<String,Integer>> ws = new ArrayList<Pair<String,Integer>>();
@@ -227,9 +224,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver{
 
 		int status = dialog.openR(roads); 
 
-		if (status == 0) {
-			
-		} else {
+		if (status != 0) {
 			if (dialog.getRoad() != null) {
 				List<Pair<String,Weather>> ws = new ArrayList<Pair<String,Weather>>();
 				Pair<String,Weather> auxPair = new Pair<String,Weather>(dialog.getRoad().getId(), dialog.getWeather());

@@ -31,7 +31,7 @@ public class ChangeWeatherDialog extends JDialog {
 	private JComboBox<Road> _roads;
 	private DefaultComboBoxModel<Road> _RoadModel;
 	private JComboBox<Weather> weatherCombo;
-	private Weather weather;
+	private Weather weather = Weather.SUNNY;
 	private static final int Time0 = 1;
 	private int ticks = 1;
 
@@ -67,38 +67,18 @@ public class ChangeWeatherDialog extends JDialog {
 		JPanel viewsPanel = new JPanel();
 		viewsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		// Creamos un roadsPanel para incluir el label y el comboBox
-		JPanel roadsPanel = new JPanel();
-		roadsPanel.setLayout(new BoxLayout(roadsPanel, BoxLayout.X_AXIS));
-
 		// Creamos el label y la lista de vehiculos para el vehiclePanel
 		JLabel roadsLabel = new JLabel("Road: ");
-		roadsPanel.add(roadsLabel);
+		viewsPanel.add(roadsLabel);
 		this._RoadModel = new DefaultComboBoxModel<>();
 		_roads = new JComboBox<>(_RoadModel);
 
-		// TODO como hacer para que se seleccionen los vehicles
-		/*
-		 * _roads.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) { List<Road> roads = new
-		 * ArrayList<Road>(); for (Road r: mapa.getRoads()) { roads.add(r); } road =
-		 * openR(roads); } });
-		 */
-
-		roadsPanel.add(_roads);
-
-		// Añadimos el vehiclePanel al panel de viewsPanel
-		viewsPanel.add(roadsPanel);
-
-		// Creamos el panel de wheaterPanel
-		JPanel wheaterPanel = new JPanel();
-		wheaterPanel.setLayout(new BoxLayout(wheaterPanel, BoxLayout.X_AXIS));
+		viewsPanel.add(_roads);
 
 		// Creamos etiqueta y array de contClass(1-10)
 		JLabel weatherLabel = new JLabel("Weather: ");
-		wheaterPanel.add(weatherLabel);
-		Weather[] valores = Weather.values(); // TODO optimizar
+		viewsPanel.add(weatherLabel);
+		Weather[] valores = Weather.values();
 		weatherCombo = new JComboBox<Weather>(valores);
 		weatherCombo.addActionListener(new ActionListener() {
 		  @Override 
@@ -108,18 +88,11 @@ public class ChangeWeatherDialog extends JDialog {
 		  });
 		 
 
-		wheaterPanel.add(weatherCombo);
-
-		// Añadimos el vehiclePanel al panel de viewsPanel
-		viewsPanel.add(wheaterPanel);
-
-		// Creamos ticksPanel
-		JPanel ticksPanel = new JPanel();
-		ticksPanel.setLayout(new BoxLayout(ticksPanel, BoxLayout.X_AXIS));
+		viewsPanel.add(weatherCombo);
 
 		// Añadimos etiqueta y spinner para los ticks
 		JLabel ticksLabel = new JLabel("Ticks: ");
-		ticksPanel.add(ticksLabel);
+		viewsPanel.add(ticksLabel);
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(Time0, 1, Integer.MAX_VALUE, 1));
 		spinner.addChangeListener(new ChangeListener() {
 			@Override
@@ -127,11 +100,8 @@ public class ChangeWeatherDialog extends JDialog {
 				ticks = (Integer) spinner.getValue();
 			}
 		});
-		ticksPanel.add(spinner);
+		viewsPanel.add(spinner);
 		spinner.setPreferredSize(new Dimension(60, 20));
-
-		// Añadimos el ticksPanel al viesPanel
-		viewsPanel.add(ticksPanel);
 
 		// Añadimos el panel que se localiza en el center al mainPanel
 		mainPanel.add(viewsPanel, BorderLayout.CENTER);
@@ -175,13 +145,12 @@ public class ChangeWeatherDialog extends JDialog {
 		setVisible(false);
 	}
 
-	public int openR(List<Road> roads) { // si se ve raro cambiarlo xd
+	public int openR(List<Road> roads) { 
 		_RoadModel.removeAllElements();
 		for (Road r : roads)
 			_RoadModel.addElement(r);
 
 		setLocation(getParent().getLocation().x + 100, getParent().getLocation().y + 100);
-		// Probad por ejemplo con +50
 
 		setVisible(true);
 

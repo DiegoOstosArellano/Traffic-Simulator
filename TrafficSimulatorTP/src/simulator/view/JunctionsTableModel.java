@@ -39,10 +39,11 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch(columnIndex) {
 		case 0: return this._junctions.get(rowIndex).getId();
-		case 1: int i =  this._junctions.get(rowIndex).getGreenLightIndex();
+		case 1: Junction j = this._junctions.get(rowIndex);
+			int i =  j.getGreenLightIndex();
 				if(i == -1)
 					return "NONE";
-				else return i; 
+				else return j.getInRoads().get(i); 
 		case 2: return  this._junctions.get(rowIndex).queuesToString();  
 		
 		default: return null; 

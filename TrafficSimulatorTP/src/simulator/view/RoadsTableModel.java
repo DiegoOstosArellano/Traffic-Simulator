@@ -37,7 +37,7 @@ public class RoadsTableModel  extends AbstractTableModel implements TrafficSimOb
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch(columnIndex) {
-			case 0: return this._roads.get(rowIndex).getId();
+			case 0: return this._roads.get(rowIndex).getId(); //TODO aqui hay que hacer mas cositas
 			case 1: return this._roads.get(rowIndex).getLength();
 			case 2: return this._roads.get(rowIndex).getWeather().toString(); //Hacerrrrr lo he creado 
 			case 3: return this._roads.get(rowIndex).getMaxSpeed(); 

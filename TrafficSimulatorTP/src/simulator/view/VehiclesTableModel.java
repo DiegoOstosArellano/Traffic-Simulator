@@ -73,7 +73,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	public Object getValueAt(int row, int col) {
 		switch(col) {
 			case 0: return this._vehicles.get(row).getId();
-			case 1: return this._vehicles.get(row).getLocation();
+			case 1: return this._vehicles.get(row).getStatusRoad();
 			case 2: return this._vehicles.get(row).getItineraryString(); //Hacerrrrr lo he creado 
 			case 3: return this._vehicles.get(row).getContClass(); 
 			case 4: return this._vehicles.get(row).getMaxSpeed();
